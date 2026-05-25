@@ -187,7 +187,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Inline Rest Timer UI */
         .rest-timer-badge {
             display: inline-flex;
             align-items: center;
@@ -291,6 +290,14 @@
             color: #e2e8f0;
         }
     </style>
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Workout" />
+    <link rel="manifest" href="/site.webmanifest" />
+
 </head>
 <body>
 
@@ -481,17 +488,17 @@
                     <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
                 </div>
                 <div class="exercise-info">
-                    <div class="exercise-name">Leg Press</div>
+                    <div class="exercise-name">Leg Extension Maschine</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
-                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
                             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">3:00</span>
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
-                    <div class="exercise-tips">Foot placement low and shoulder-width for quad bias. Deep controlled range without lifting lower back.</div>
+                    <div class="exercise-tips">Align knee joints with the machine pivot point. Pause at total peak contraction, squeezing the quads hard before a controlled descent.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_2.jpg" class="exercise-image" alt="Leg Press Form">
+                        <img src="cellImage_1380858377_5.jpg" class="exercise-image" alt="Leg Extension Maschine Form">
                     </div>
                 </div>
             </div>
@@ -530,6 +537,25 @@
                     <div class="exercise-tips">Drop heels completely, hold deep stretch for 2 full seconds to eliminate momentum, then explode up.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_4.jpg" class="exercise-image" alt="Standing Calf Raises Form">
+                    </div>
+                </div>
+            </div>
+            <div class="exercise-card">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
+                </div>
+                <div class="exercise-info">
+                    <div class="exercise-name">Ab Crunch Machine</div>
+                    <div class="meta-row">
+                        <div class="exercise-meta">3 sets x 12–15 reps</div>
+                        <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                            <span class="timer-text">1:30</span>
+                        </div>
+                    </div>
+                    <div class="exercise-tips">Focus on flexing the spine and curling your torso downward rather than pulling with your hip flexors or arms. Squeeze your abs completely at the bottom.</div>
+                    <div class="exercise-image-container">
+                        <img src="cellImage_1380858377_6.jpg" class="exercise-image" alt="Ab Crunch Machine Form">
                     </div>
                 </div>
             </div>
@@ -647,7 +673,7 @@
         <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Sunday</div>
-                <div class="day-subtitle">Upper Body </div>
+                <div class="day-subtitle">Upper Body</div>
             </div>
             <svg class="chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </div>
@@ -671,222 +697,53 @@
                     </div>
                 </div>
             </div>
-            <div class="exercise-card">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
-                </div>
-                <div class="exercise-info">
-                    <div class="exercise-name">Cable Pullovers</div>
-                    <div class="meta-row">
-                        <div class="exercise-meta">3 sets x 10–12 reps</div>
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
-                        </div>
-                    </div>
-                    <div class="exercise-tips">Use a close neutral grip. Pull handle low toward your belly button, keeping shoulders dropped down.</div>
-                    <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_1.jpg" class="exercise-image" alt="Cable Pullovers">
-                    </div>
-                </div>
             </div>
-            <div class="exercise-card">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
-                </div>
-                <div class="exercise-info">
-                    <div class="exercise-name">Incline Cable Flyes</div>
-                    <div class="meta-row">
-                        <div class="exercise-meta">3 sets x 12–15 reps</div>
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
-                        </div>
-                    </div>
-                    <div class="exercise-tips">Focus heavily on the deep, loaded stretch at the bottom where cables offer maximum continuous tension.</div>
-                    <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_2.jpg" class="exercise-image" alt="Incline Cable Flyes">
-                    </div>
-                </div>
-            </div>
-            <div class="exercise-card">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
-                </div>
-                <div class="exercise-info">
-                    <div class="exercise-name">Lateral Raises</div>
-                    <div class="meta-row">
-                        <div class="exercise-meta">4 sets x 12–15 reps</div>
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
-                        </div>
-                    </div>
-                    <div class="exercise-tips">Tilt torso slightly forward, raise dumbbells out to the sides in a wide arc. Keep pinkies slightly high.</div>
-                    <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_3.jpg" class="exercise-image" alt="Dumbbell Lateral Raises">
-                    </div>
-                </div>
-            </div>
-            <div class="exercise-card">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="workout-checkbox" onchange="toggleComplete(this)">
-                </div>
-                <div class="exercise-info">
-                    <div class="exercise-name">Face Pulls</div>
-                    <div class="meta-row">
-                        <div class="exercise-meta">3 sets x 12–15 reps</div>
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
-                        </div>
-                    </div>
-                    <div class="exercise-tips">Pull center of rope straight toward your nose, flaring elbows high and pulling hands apart at the back.</div>
-                    <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_4.jpg" class="exercise-image" alt="Face Pulls">
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
+        // Placeholder scripts for base operations
         function toggleSection(element) {
-            const parent = element.parentElement;
-            parent.classList.toggle('active');
+            element.parentElement.classList.toggle('active');
         }
-
         function toggleComplete(checkbox) {
             const card = checkbox.closest('.exercise-card');
-            if (checkbox.checked) {
+            if(checkbox.checked) {
                 card.classList.add('completed');
             } else {
                 card.classList.remove('completed');
             }
         }
-
-        // Rest Timer Core Logic
-        let activeIntervals = new Map();
-        let remainingTimes = new Map();
-
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return `${m}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function playAlertSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-
-                // Sound cue: High clear double-chirp
-                const playChirp = (time, freq) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(freq, time);
-                    gain.gain.setValueAtTime(0.2, time);
-                    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(time);
-                    osc.stop(time + 0.15);
-                };
-
-                const now = ctx.currentTime;
-                playChirp(now, 880);
-                playChirp(now + 0.2, 880);
-            } catch (e) {
-                console.log("Audio not allowed yet or uninitialized context");
-            }
-        }
-
-        function triggerHapticAlert() {
-            if ('vibrate' in navigator) {
-                // Double vibration heartbeat pulse
-                navigator.vibrate();
-            }
-        }
-
         function handleTimerClick(badge) {
-            // Check if timer state needs clearing down after finish flag
-            if (badge.classList.contains('finished')) {
-                resetTimer(badge);
-                return;
-            }
-
-            if (activeIntervals.has(badge)) {
-                // Pause active running state
-                clearInterval(activeIntervals.get(badge));
-                activeIntervals.delete(badge);
-                badge.classList.remove('running');
-            } else {
-                // Start tracking timer runtime loop
-                badge.classList.add('running');
-                let timeLeft = remainingTimes.has(badge) ? remainingTimes.get(badge) : parseInt(badge.dataset.duration, 10);
-
-                const textEl = badge.querySelector('.timer-text');
-
-                const interval = setInterval(() => {
-                    timeLeft--;
-                    remainingTimes.set(badge, timeLeft);
-                    textEl.textContent = formatTime(timeLeft);
-
-                    if (timeLeft <= 0) {
-                        clearInterval(interval);
-                        activeIntervals.delete(badge);
-                        remainingTimes.delete(badge);
-
-                        badge.classList.remove('running');
-                        badge.classList.add('finished');
-                        textEl.textContent = "Time Up!";
-
-                        playAlertSound();
-                        triggerHapticAlert();
-
-                        // Auto reset complete tag back to setup layout footprint after 2s
-                        setTimeout(() => {
-                            if (badge.classList.contains('finished')) {
-                                resetTimer(badge);
-                            }
-                        }, 2500);
-                    }
-                }, 1000);
-
-                activeIntervals.set(badge, interval);
-            }
-        }
-
-        function resetTimer(badge) {
-            if (activeIntervals.has(badge)) {
-                clearInterval(activeIntervals.get(badge));
-                activeIntervals.delete(badge);
-            }
-            remainingTimes.delete(badge);
-            badge.classList.remove('running', 'finished');
-            badge.querySelector('.timer-text').textContent = formatTime(parseInt(badge.dataset.duration, 10));
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const daysMap = {
-                1: 'day-monday',
-                5: 'day-friday',
-                6: 'day-saturday',
-                0: 'day-sunday'
-            };
-
-            const currentDayNumber = new Date().getDay();
-            const targetId = daysMap[currentDayNumber];
-
-            if (targetId) {
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
+            if (badge.classList.contains('running')) return;
+            badge.classList.add('running');
+            let duration = parseInt(badge.getAttribute('data-duration'));
+            const textSpan = badge.querySelector('.timer-text');
+            
+            const interval = setInterval(() => {
+                duration--;
+                let mins = Math.floor(duration / 60);
+                let secs = duration % 60;
+                textSpan.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                
+                if (duration <= 0) {
+                    clearInterval(interval);
+                    badge.classList.remove('running');
+                    badge.classList.add('finished');
+                    textSpan.innerText = "Done!";
+                    
+                    // Simple haptic support if browser allows
+                    if(navigator.vibrate) navigator.vibrate();
+                    
+                    setTimeout(() => {
+                        badge.classList.remove('finished');
+                        let originalDuration = parseInt(badge.getAttribute('data-duration'));
+                        let origMins = Math.floor(originalDuration / 60);
+                        let origSecs = originalDuration % 60;
+                        textSpan.innerText = `${origMins}:${origSecs < 10 ? '0' : ''}${origSecs}`;
+                    }, 5000);
                 }
-            }
-        });
+            }, 1000);
+        }
     </script>
 </body>
 </html>
