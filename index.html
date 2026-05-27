@@ -234,25 +234,39 @@
             display: block;
         }
 
-        /* Modernized Flex Row for Weight and Timer UI Layout based on goal.png */
+        /* Flex row configuration for action buttons */
         .timer-placement-wrapper {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             margin-top: 24px;
             margin-bottom: 16px;
         }
 
-        /* Combined Flex Wrapper Matching the Layout inside goal.png */
-        .badge-interactive-container {
+        /* Standardized dimensions across pills */
+        .badge-interactive-container, 
+        .rest-timer-badge {
             display: flex;
             align-items: center;
             background-color: #21242a;
             border: 1px solid #2d3139;
             border-radius: 40px;
-            padding: 10px 24px;
+            padding: 6px 14px;
+            width: 145px; /* Unified width setting */
+            height: 46px;
+            box-sizing: border-box;
             transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .badge-interactive-container {
+            justify-content: flex-start;
+        }
+
+        .rest-timer-badge {
+            justify-content: flex-start;
+            cursor: pointer;
+            user-select: none;
         }
 
         .badge-interactive-container:focus-within {
@@ -260,26 +274,50 @@
             background-color: #262a32;
         }
 
-        /* Icon Resizing and Positioning */
+        /* Grey circular background wrapper modeled from image_81cf48.png */
+        .icon-circle-bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #9aa2ae; /* High contrast slate-grey background matching sample image */
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Normalized icon imagery dimensions inside backgrounds */
         .badge-ui-icon {
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             object-fit: contain;
             display: block;
-            margin-right: 12px;
             user-select: none;
             pointer-events: none;
         }
 
-        /* Cleaned Up Custom Weight Input fields */
+        /* Tinting black graphic features on the icon paths slightly for readability over grey circles */
+        .badge-ui-icon-dark {
+            filter: brightness(0.1);
+        }
+
+        /* Typography input field sizing */
+        .weight-input-container {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-start;
+        }
+
         .weight-input-field {
             background: transparent;
             border: none;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #b2bac2;
-            width: 52px;
-            text-align: right;
+            width: 48px;
+            text-align: left;
             font-family: inherit;
             outline: none;
             padding: 0;
@@ -290,40 +328,31 @@
             font-weight: 700;
         }
 
-        /* Units Suffix text */
         .weight-unit-label {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: #7d848c;
-            margin-left: 4px;
+            margin-left: 2px;
             user-select: none;
         }
 
-        /* Rest Timer Badge Dynamic Wrapper Layout */
-        .rest-timer-badge {
-            display: flex;
-            align-items: center;
-            background-color: #21242a;
-            border: 1px solid #2d3139;
-            padding: 10px 24px;
-            border-radius: 40px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s ease;
+        .timer-text-container {
+            flex: 1;
+            text-align: left;
+        }
+
+        .rest-timer-badge .timer-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #b2bac2;
+            font-variant-numeric: tabular-nums;
         }
 
         .rest-timer-badge:hover {
             border-color: #3d434f;
         }
 
-        .rest-timer-badge .timer-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #b2bac2;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* Core Dynamic State Animations and Color Layout Modifications */
+        /* Active dynamic states colors and alerts */
         .rest-timer-badge.running {
             background-color: rgba(245, 158, 11, 0.12);
             border-color: var(--accent-warning);
@@ -347,11 +376,12 @@
         }
         .rest-timer-badge.finished .timer-text {
             color: var(--accent-success);
+            font-size: 1.05rem;
         }
 
         @keyframes pulse-alert-green {
             0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
 
@@ -429,16 +459,24 @@
                         <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <!-- Redesigned Weight Input Badge Block Container -->
+                        <!-- Weight Pill Component -->
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
-                        <!-- Redesigned Rest Timer Badge Container -->
+                        <!-- Rest Timer Pill Component -->
                         <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">3:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -458,13 +496,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -484,13 +530,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -510,13 +564,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -536,13 +598,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -562,13 +632,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -600,13 +678,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">3:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -626,13 +712,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -652,13 +746,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -678,13 +780,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -704,13 +814,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -730,13 +848,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">1:30</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">1:30</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -768,13 +894,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">3:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -794,13 +928,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">3:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -820,13 +962,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -846,13 +996,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -872,13 +1030,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -910,13 +1076,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -936,13 +1110,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -962,13 +1144,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -988,13 +1178,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1014,13 +1212,21 @@
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
-                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
-                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
-                            <span class="weight-unit-label">kg</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
+                            </div>
+                            <div class="weight-input-container">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                                <span class="weight-unit-label">kg</span>
+                            </div>
                         </div>
                         <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
-                            <span class="timer-text">2:00</span>
+                            <div class="icon-circle-bg">
+                                <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
+                            </div>
+                            <div class="timer-text-container">
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
