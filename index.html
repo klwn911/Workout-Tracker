@@ -244,7 +244,7 @@
             margin-bottom: 16px;
         }
 
-        /* Standardized dimensions across pills */
+        /* Standardized dimensions across pills with optimized compact margins */
         .badge-interactive-container, 
         .rest-timer-badge {
             display: flex;
@@ -252,18 +252,21 @@
             background-color: #21242a;
             border: 1px solid #2d3139;
             border-radius: 40px;
-            padding: 6px 14px;
-            width: 125px; /* Narrowed width setting from 145px */
             height: 46px;
             box-sizing: border-box;
             transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
+        /* Reduced width tiny bit more for both pills */
         .badge-interactive-container {
+            width: 122px;
+            padding: 6px 10px;
             justify-content: flex-start;
         }
 
         .rest-timer-badge {
+            width: 122px;
+            padding: 6px 10px;
             justify-content: flex-start;
             cursor: pointer;
             user-select: none;
@@ -283,8 +286,15 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            margin-right: 12px;
+            margin-right: 8px; /* Slightly tightened up space */
             flex-shrink: 0;
+            transition: background-color 0.15s ease;
+        }
+
+        /* Dynamic color shift when the weight pill input is pressed/focused */
+        /* Changes background to a color match of the outline border, but a tiny bit darker */
+        .badge-interactive-container:focus-within .icon-circle-bg {
+            background-color: #1d4ed8; 
         }
 
         /* Normalized icon imagery dimensions inside backgrounds */
@@ -295,9 +305,14 @@
             display: block;
             user-select: none;
             pointer-events: none;
+            transition: filter 0.15s ease;
         }
 
-        /* Tinting black graphic features on the icon paths slightly for readability over grey circles */
+        /* Flip the icon path details to high contrast white when the background circle darkens */
+        .badge-interactive-container:focus-within .badge-ui-icon-dark {
+            filter: brightness(0) invert(1);
+        }
+
         .badge-ui-icon-dark {
             filter: brightness(0.1);
         }
@@ -305,18 +320,20 @@
         /* Typography input field sizing */
         .weight-input-container {
             display: flex;
-            align-items: center;
+            align-items: baseline;
             flex: 1;
             justify-content: flex-start;
+            overflow: hidden;
         }
 
+        /* Auto-compress width down slightly and eliminate padding */
         .weight-input-field {
             background: transparent;
             border: none;
             font-size: 1.25rem;
             font-weight: 700;
             color: #b2bac2;
-            width: 48px;
+            width: 38px;
             text-align: left;
             font-family: inherit;
             outline: none;
@@ -328,11 +345,12 @@
             font-weight: 700;
         }
 
+        /* Placed right behind the number with reduced font sizes */
         .weight-unit-label {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #7d848c;
-            margin-left: 2px;
+            margin-left: 1px;
             user-select: none;
         }
 
@@ -360,6 +378,12 @@
         .rest-timer-badge.running .timer-text {
             color: var(--accent-warning);
         }
+        .rest-timer-badge.running .icon-circle-bg {
+            background-color: #b45309; /* Darker warning accent color */
+        }
+        .rest-timer-badge.running .badge-ui-icon-dark {
+            filter: brightness(0) invert(1);
+        }
 
         .rest-timer-badge.paused {
             background-color: rgba(59, 130, 246, 0.12);
@@ -367,6 +391,12 @@
         }
         .rest-timer-badge.paused .timer-text {
             color: var(--accent-color);
+        }
+        .rest-timer-badge.paused .icon-circle-bg {
+            background-color: #1d4ed8; /* Darker blue accent color */
+        }
+        .rest-timer-badge.paused .badge-ui-icon-dark {
+            filter: brightness(0) invert(1);
         }
 
         .rest-timer-badge.finished {
@@ -459,7 +489,6 @@
                         <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <!-- Weight Pill Component -->
                         <div class="badge-interactive-container">
                             <div class="icon-circle-bg">
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
@@ -469,7 +498,6 @@
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <!-- Rest Timer Pill Component -->
                         <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
