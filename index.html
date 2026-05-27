@@ -14,6 +14,7 @@
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --border-color: #2a2a32;
+            --badge-bg: #22252a;
         }
 
         * {
@@ -71,15 +72,6 @@
             transition: transform 0.2s ease;
         }
 
-        .day-content {
-            display: none;
-            padding: 16px;
-        }
-
-        .day-section.active .day-content {
-            display: block;
-        }
-
         .day-header {
             padding: 16px;
             background-color: rgba(255, 255, 255, 0.02);
@@ -119,14 +111,22 @@
             stroke: var(--accent-color);
         }
 
-        /* Distance between exercises optimized for 2x scale spacing */
+        .day-content {
+            display: none;
+            padding: 16px;
+        }
+
+        .day-section.active .day-content {
+            display: block;
+        }
+
         .exercise-card {
             display: flex;
             align-items: flex-start;
             gap: 14px;
             border-left: 3px solid var(--accent-color);
             padding-left: 12px;
-            margin-bottom: 64px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
 
@@ -138,7 +138,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 4px;
+            margin-top: 2px;
             cursor: pointer;
         }
 
@@ -181,36 +181,140 @@
         }
 
         .exercise-name {
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin-bottom: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
             transition: color 0.3s ease;
-            letter-spacing: -0.01em;
-            color: var(--text-main);
         }
 
         .meta-row {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
             gap: 10px;
-            margin-bottom: 8px;
             flex-wrap: wrap;
         }
 
         .exercise-meta {
-            font-size: 1.15rem;
-            font-weight: 800;
+            font-size: 0.875rem;
+            font-weight: 700;
             color: var(--accent-color);
             transition: color 0.3s ease;
-            letter-spacing: -0.01em;
+            flex-basis: 100%;
+            margin-bottom: 4px;
+        }
+
+        /* Metric Logging Components */
+        .metrics-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 8px;
+        }
+
+        .metric-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--badge-bg);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            user-select: none;
+            transition: all 0.2s ease;
+            height: 28px;
+        }
+
+        .metric-badge:hover {
+            border-color: var(--text-muted);
+        }
+
+        .badge-icon {
+            width: 14px;
+            height: 14px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Timer Specific Styles */
+        .rest-timer-badge {
+            cursor: pointer;
+        }
+
+        .rest-timer-badge.running {
+            background-color: rgba(245, 158, 11, 0.15);
+            border-color: var(--accent-warning);
+            color: var(--accent-warning);
+        }
+
+        .rest-timer-badge.finished {
+            background-color: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-success);
+            color: var(--accent-success);
+            animation: pulse-green 1.5s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        /* Weight Input Specific Styles */
+        .weight-badge {
+            cursor: text;
+            position: relative;
+        }
+
+        .weight-input-wrapper {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .weight-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 32px;
+            text-align: right;
+            padding: 0;
+        }
+
+        /* Chromes/Safari/Edge/Opera arrow removal */
+        .weight-input::-webkit-outer-spin-button,
+        .weight-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox arrow removal */
+        .weight-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .weight-badge.unfocused .weight-input {
+            color: var(--text-muted);
+        }
+        
+        .weight-badge.unfocused {
+            color: var(--text-muted);
         }
 
         .exercise-tips {
             font-size: 0.85rem;
             color: var(--text-muted);
             line-height: 1.4;
+            margin-top: 8px;
             transition: color 0.3s ease;
-            margin-bottom: 4px;
         }
 
         .exercise-image-container {
@@ -233,115 +337,6 @@
             max-width: 100%;
             object-fit: contain;
             display: block;
-        }
-
-        /* Layout Container for Weight + Timer Row */
-        .timer-placement-wrapper {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 12px;
-            margin-top: 24px;
-            margin-bottom: 16px;
-        }
-
-        /* Weight Input Field styling mirroring the Badge shape and text */
-        .weight-input {
-            background-color: #22252a;
-            border: 1px solid var(--border-color);
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-main);
-            width: 68px;
-            text-align: center;
-            font-family: inherit;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            
-            /* Match the scale(2) of the rest timer badge */
-            transform: scale(2);
-            transform-origin: left center;
-        }
-
-        .weight-input::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .weight-input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 1px var(--accent-color);
-        }
-
-        .rest-timer-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background-color: #22252a;
-            border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s ease;
-            
-            /* Scaled by 2x */
-            transform: scale(2);
-            transform-origin: left center;
-        }
-
-        /* Compensate spacing to make room for the 2x scaling rightwards expansion */
-        .rest-timer-badge-container {
-            width: 110px; 
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
-        .weight-input-container {
-            width: 136px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
-
-        .rest-timer-badge:hover {
-            border-color: var(--text-muted);
-        }
-
-        .rest-timer-badge.running {
-            background-color: rgba(245, 158, 11, 0.15);
-            border-color: var(--accent-warning);
-            color: var(--accent-warning);
-        }
-
-        .rest-timer-badge.paused {
-            background-color: rgba(59, 130, 246, 0.15);
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        .rest-timer-badge.finished {
-            background-color: rgba(16, 185, 129, 0.15);
-            border-color: var(--accent-success);
-            color: var(--accent-success);
-            animation: pulse-green 1.5s infinite;
-        }
-
-        .rest-timer-badge svg {
-            width: 12px;
-            height: 12px;
-            fill: currentColor;
-        }
-
-        @keyframes pulse-green {
-            0% { transform: scale(2); }
-            50% { transform: scale(2.06); }
-            100% { transform: scale(2); }
         }
 
         .exercise-card.completed {
@@ -380,6 +375,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Workout" />
     <link rel="manifest" href="site.webmanifest" />
+
 </head>
 <body>
 
@@ -412,21 +408,23 @@
                     <div class="exercise-name">Seated Shoulder Press Maschine</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 6–8 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">3:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Keep elbows slightly tucked forward at a 30-degree angle to protect rotator cuffs. Control the descent.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -438,21 +436,23 @@
                     <div class="exercise-name">Standing Cable Lateral Raises</div>
                     <div class="meta-row">
                         <div class="exercise-meta">4 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Set pulley at bottom position. Lean slightly away from stack to maximize bottom stretch.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_1.jpg" class="exercise-image" alt="Standing Cable Lateral Raises">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -464,21 +464,23 @@
                     <div class="exercise-name">Incline Dumbbell Bicep Curls</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 8–10 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Set bench to 45 degrees. Keep shoulders pinned against the pad. Lock elbows in place.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_2.jpg" class="exercise-image" alt="Incline Dumbbell Bicep Curls">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -490,21 +492,23 @@
                     <div class="exercise-name">Cable Tricep Pushdowns</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Use independent or single cable(s) to pull past your hips at the bottom for a deeper tricep contraction.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_3.jpg" class="exercise-image" alt="Dual Cable Tricep Pushdowns">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -516,21 +520,23 @@
                     <div class="exercise-name">EZ-Bar Preacher Curls</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Stop just short of total lockout at the bottom to maintain constant tension and protect tendons.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_4.jpg" class="exercise-image" alt="EZ-Bar Preacher Curls">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -542,21 +548,23 @@
                     <div class="exercise-name">Overhead Cable Tricep Extensions</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Brace core, face away from stack. Focus entirely on extension at the elbow without drifting upper arm.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_2029192408_5.jpg" class="exercise-image" alt="Overhead Cable Tricep Extensions">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -580,21 +588,23 @@
                     <div class="exercise-name">Hack Squat</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 6–8 reps</div>
-                    </div>
-                    <div class="exercise-tips">Keep feet low on platform for deep knee flexion. Plant heels securely. Control the 3-second negative.</div>
-                    <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
                                 <span class="timer-text">3:00</span>
                             </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="exercise-tips">Place feet low on platform for deep knee flexion. Keep heels planted. Control the 3-second negative.</div>
+                    <div class="exercise-image-container">
+                        <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
                     </div>
                 </div>
             </div>
@@ -606,21 +616,23 @@
                     <div class="exercise-name">Seated Leg Curl</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 8–10 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Pull thigh pad down tightly against legs to lock pelvis. Squeeze hard at peak contraction.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_1.jpg" class="exercise-image" alt="Seated Leg Curl Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -632,21 +644,23 @@
                     <div class="exercise-name">Leg Extension Maschine</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Align knee joints with the machine pivot point. Pause at total peak contraction, squeezing the quads hard before a controlled descent.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_5.jpg" class="exercise-image" alt="Leg Extension Maschine Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -658,21 +672,23 @@
                     <div class="exercise-name">Romanian Dumbell Deadlifts</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 8–10 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Soft bend in knees, push hips back as far as possible. Stop when hips stop moving backward to spare lower back.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_3.jpg" class="exercise-image" alt="Romanian Deadlifts Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -684,21 +700,23 @@
                     <div class="exercise-name">Standing Calf Raises</div>
                     <div class="meta-row">
                         <div class="exercise-meta">4 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Drop heels completely, hold deep stretch for 2 full seconds to eliminate momentum, then explode up.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_4.jpg" class="exercise-image" alt="Standing Calf Raises Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -710,21 +728,23 @@
                     <div class="exercise-name">Ab Crunch Machine</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">1:30</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Focus on flexing the spine and curling your torso downward rather than pulling with your hip flexors or arms. Squeeze your abs completely at the bottom.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_6.jpg" class="exercise-image" alt="Ab Crunch Machine Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">1:30</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -748,21 +768,23 @@
                     <div class="exercise-name">Incline Chest Press</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 6–8 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">3:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Use a modest 30-degree incline. Arch upper back slightly and drive feet into the floor for stability.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_0.jpg" class="exercise-image" alt="Incline Chest Press Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -774,21 +796,23 @@
                     <div class="exercise-name">T-Bar Row</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 6–8 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">3:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Let shoulder blades fully stretch forward at the bottom, drive elbows back behind torso to finish.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_1.jpg" class="exercise-image" alt="T-Bar Row Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -800,21 +824,23 @@
                     <div class="exercise-name">Flat Machine Press</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 8–10 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Adjust seat height so handles align with mid-chest. Drive shoulder blades deep into the pad.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_2.jpg" class="exercise-image" alt="Flat Machine Press Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -826,21 +852,23 @@
                     <div class="exercise-name">Neutral Grip Lat Pulldown</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 8–10 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Lean back slightly (10-15 degrees) and pull straight down to upper chest, driving down with elbows.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_3.jpg" class="exercise-image" alt="Lat Pulldown Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -852,21 +880,23 @@
                     <div class="exercise-name">Machine Rear Delt Flyes</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Keep a slight bend in elbows and focus on pushing hands outward to the walls rather than pulling back.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_4.jpg" class="exercise-image" alt="Rear Delt Flyes Form">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -890,21 +920,23 @@
                     <div class="exercise-name">Inner Chest Press</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Keep shoulders packed down and back. Focus entirely on squeezing your inner chest at peak contraction.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1583461792_5.jpg" class="exercise-image" alt="Inner Chest Press">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -916,21 +948,23 @@
                     <div class="exercise-name">Cable Pullovers</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 10–12 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Use a close neutral grip. Pull handle low toward your belly button, keeping shoulders dropped down.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1677496159_1.jpg" class="exercise-image" alt="Cable Pullovers">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -942,21 +976,23 @@
                     <div class="exercise-name">Incline Cable Flyes</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Focus heavily on the deep, loaded stretch at the bottom where cables offer maximum continuous tension.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1677496159_2.jpg" class="exercise-image" alt="Incline Cable Flyes">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -968,21 +1004,23 @@
                     <div class="exercise-name">Lateral Raises</div>
                     <div class="meta-row">
                         <div class="exercise-meta">4 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Tilt torso slightly forward, raise dumbbells out to the sides in a wide arc. Keep pinkies slightly high.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1677496159_3.jpg" class="exercise-image" alt="Dumbbell Lateral Raises">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -994,98 +1032,32 @@
                     <div class="exercise-name">Face Pulls</div>
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 12–15 reps</div>
+                        <div class="metrics-container">
+                            <div class="metric-badge rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)">
+                                <img src="icon_timer.png" class="badge-icon" alt="Timer">
+                                <span class="timer-text">2:00</span>
+                            </div>
+                            <div class="metric-badge weight-badge unfocused" onclick="focusWeightInput(this)">
+                                <img src="icon_weight.png" class="badge-icon" alt="Weight">
+                                <div class="weight-input-wrapper">
+                                    <input type="number" class="weight-input" placeholder="--" onfocus="handleWeightFocus(this)" onblur="handleWeightBlur(this)" oninput="adjustInputWidth(this)">
+                                    <span class="weight-unit"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="exercise-tips">Pull center of rope straight toward your nose, flaring elbows high and pulling hands apart at the back.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1677496159_4.jpg" class="exercise-image" alt="Face Pulls">
-                    </div>
-                    <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
-                        </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <audio id="audio-lightweight" src="lightweight.mp3" preload="auto"></audio>
+
     <script>
-        // --- WEB AUDIO API AMPLIFIED MIXER FOR ANDROID ---
-        let audioContext = null;
-        let audioBuffer = null;
-        let currentSource = null;
-        let gainNode = null;
-
-        // Amplifies the digital volume context over Spotify baseline music thread
-        const volumeMultiplier = 3.0; 
-
-        // Initial caching pipeline
-        fetch('lightweight.mp3')
-            .then(response => response.arrayBuffer())
-            .then(data => { window.storedAudioBuffer = data; })
-            .catch(err => console.log("Audio cache pre-stage ready.", err));
-
-        function unlockAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (window.storedAudioBuffer && !audioBuffer) {
-                audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
-                    audioBuffer = buffer;
-                }, (err) => console.log("WebAudio context decode failure:", err));
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            document.removeEventListener('click', unlockAudioContext);
-            document.removeEventListener('touchstart', unlockAudioContext);
-        }
-        document.addEventListener('click', unlockAudioContext);
-        document.addEventListener('touchstart', unlockAudioContext);
-
-        function playWebAudioAlert() {
-            if (!audioContext || !audioBuffer) {
-                const fallback = new Audio('lightweight.mp3');
-                fallback.play().catch(e => console.log(e));
-                return;
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            stopWebAudioAlert();
-
-            currentSource = audioContext.createBufferSource();
-            currentSource.buffer = audioBuffer;
-
-            gainNode = audioContext.createGain();
-            gainNode.gain.setValueAtTime(volumeMultiplier, audioContext.currentTime);
-
-            currentSource.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            currentSource.start(0);
-        }
-
-        function stopWebAudioAlert() {
-            if (currentSource) {
-                try { currentSource.stop(); } catch(e) {}
-                currentSource = null;
-            }
-            if (gainNode) {
-                try { gainNode.disconnect(); } catch(e) {}
-                gainNode = null;
-            }
-        }
-        // -----------------------------------------------------
-
-        const timerStates = new Map();
-
         function toggleSection(element) {
             element.parentElement.classList.toggle('active');
         }
@@ -1099,124 +1071,82 @@
             }
         }
 
-        function formatDisplayTime(seconds) {
-            let mins = Math.floor(seconds / 60);
-            let secs = seconds % 60;
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
         function handleTimerClick(badge) {
-            if (badge.dataset.doubleTapTimeout === "true") return;
-
-            if (badge.classList.contains('finished')) {
-                clearAndResetBadgeState(badge);
-                return;
-            }
-
-            if (badge.classList.contains('running')) {
-                clearInterval(timerStates.get(badge));
-                badge.classList.remove('running');
-                badge.classList.add('paused');
-                return;
-            }
-
-            badge.classList.remove('paused');
+            if (badge.classList.contains('running')) return;
             badge.classList.add('running');
-
-            let currentRemaining = badge.dataset.remainingTime ? 
-                parseInt(badge.dataset.remainingTime) : 
-                parseInt(badge.getAttribute('data-duration'));
-
+            let duration = parseInt(badge.getAttribute('data-duration'));
             const textSpan = badge.querySelector('.timer-text');
-
+            
             const interval = setInterval(() => {
-                currentRemaining--;
-                badge.dataset.remainingTime = currentRemaining;
-                textSpan.innerText = formatDisplayTime(currentRemaining);
-
-                if (currentRemaining <= 0) {
+                duration--;
+                let mins = Math.floor(duration / 60);
+                let secs = duration % 60;
+                textSpan.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                
+                if (duration <= 0) {
                     clearInterval(interval);
                     badge.classList.remove('running');
                     badge.classList.add('finished');
-                    textSpan.innerText = "Let's Go!";
-
-                    playWebAudioAlert();
-
+                    textSpan.innerText = "Done!";
+                    
+                    // Play the legendary sound clip instead of simple vibration
+                    const audio = document.getElementById('audio-lightweight');
+                    if (audio) {
+                        audio.currentTime = 0;
+                        audio.play().catch(e => console.log("Audio playback blocked or failed:", e));
+                    }
                     if(navigator.vibrate) navigator.vibrate();
-
-                    const finishTimeout = setTimeout(() => {
-                        if (badge.classList.contains('finished')) {
-                            clearAndResetBadgeState(badge);
-                        }
-                    }, 10000);
-                    badge.dataset.timeoutRef = finishTimeout;
+                    
+                    setTimeout(() => {
+                        badge.classList.remove('finished');
+                        let originalDuration = parseInt(badge.getAttribute('data-duration'));
+                        let origMins = Math.floor(originalDuration / 60);
+                        let origSecs = originalDuration % 60;
+                        textSpan.innerText = `${origMins}:${origSecs < 10 ? '0' : ''}${origSecs}`;
+                    }, 5000);
                 }
             }, 1000);
-
-            timerStates.set(badge, interval);
         }
 
-        function handleTimerReset(badge) {
-            badge.dataset.doubleTapTimeout = "true";
-            setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
-
-            clearAndResetBadgeState(badge);
+        /* Weight Logging Interaction Handlers */
+        function focusWeightInput(badge) {
+            const input = badge.querySelector('.weight-input');
+            input.focus();
         }
 
-        function clearAndResetBadgeState(badge) {
-            if (timerStates.has(badge)) {
-                clearInterval(timerStates.get(badge));
-                timerStates.delete(badge);
-            }
-            if (badge.dataset.timeoutRef) {
-                clearTimeout(parseInt(badge.dataset.timeoutRef));
-                delete badge.dataset.timeoutRef;
-            }
-
-            stopWebAudioAlert();
-
-            badge.classList.remove('running', 'paused', 'finished');
-            delete badge.dataset.remainingTime;
-
-            const originalDuration = parseInt(badge.getAttribute('data-duration'));
-            badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
-        }
-
-        // --- DYNAMIC STORAGE KEY & LOCALSTORAGE PIPELINE ---
-
-        // Generates an automated unique storage key based on the exercise title string
-        function generateExerciseStorageKey(inputElement) {
-            const card = inputElement.closest('.exercise-card');
-            if (!card) return null;
-            const nameElement = card.querySelector('.exercise-name');
-            if (!nameElement) return null;
+        function handleWeightFocus(input) {
+            const badge = input.closest('.weight-badge');
+            badge.classList.remove('unfocused');
             
-            // Format name to a safe alphanumeric key structure
-            return 'weight_history_' + nameElement.innerText.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
-        }
-
-        function saveWeight(inputElement) {
-            const key = generateExerciseStorageKey(inputElement);
-            if (key) {
-                localStorage.setItem(key, inputElement.value);
+            // Clean up unit placeholder string temporarily on focus to allow numeric edits
+            const unitSpan = badge.querySelector('.weight-unit');
+            if (input.value !== "") {
+                unitSpan.innerText = "";
             }
         }
 
-        function initializeAppHistory() {
-            const inputs = document.querySelectorAll('.weight-input');
-            inputs.forEach(input => {
-                const key = generateExerciseStorageKey(input);
-                if (key) {
-                    const savedVal = localStorage.getItem(key);
-                    if (savedVal !== null) {
-                        input.value = savedVal;
-                    }
-                }
-            });
+        function handleWeightBlur(input) {
+            const badge = input.closest('.weight-badge');
+            const unitSpan = badge.querySelector('.weight-unit');
+            
+            badge.classList.add('unfocused');
+            
+            if (input.value.trim() !== "") {
+                unitSpan.innerText = " kg";
+            } else {
+                unitSpan.innerText = "";
+            }
+            adjustInputWidth(input);
         }
 
-        // Initialize state right when page layout stabilizes
-        document.addEventListener('DOMContentLoaded', initializeAppHistory);
+        function adjustInputWidth(input) {
+            // Dynamically scales width to accommodate varying character tracking sizes safely
+            if (input.value.length > 0) {
+                input.style.width = (input.value.length * 8 + 12) + "px";
+            } else {
+                input.style.width = "32px";
+            }
+        }
     </script>
 </body>
 </html>
