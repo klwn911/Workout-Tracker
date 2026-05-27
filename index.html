@@ -119,14 +119,14 @@
             stroke: var(--accent-color);
         }
 
-        /* Increased distance between exercise blocks from 24px to 40px */
+        /* Distance between exercises increased to 52px */
         .exercise-card {
             display: flex;
             align-items: flex-start;
             gap: 14px;
             border-left: 3px solid var(--accent-color);
             padding-left: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 52px;
             transition: all 0.3s ease;
         }
 
@@ -291,7 +291,7 @@
 
         @keyframes pulse-green {
             0% { transform: scale(2); }
-            50% { transform: scale(2.08); }
+            50% { transform: scale(2.06); }
             100% { transform: scale(2); }
         }
 
@@ -926,18 +926,19 @@
                     clearInterval(interval);
                     badge.classList.remove('running');
                     badge.classList.add('finished');
-                    textSpan.innerText = "Done!";
+                    textSpan.innerText = "Let's Go!";
 
                     alarmSound.currentTime = 0;
                     alarmSound.play().catch(err => console.log("Playback blocked:", err));
 
                     if(navigator.vibrate) navigator.vibrate();
 
+                    // Modified from 6000 to 10000ms (10 seconds display time)
                     const finishTimeout = setTimeout(() => {
                         if (badge.classList.contains('finished')) {
                             clearAndResetBadgeState(badge);
                         }
-                    }, 6000);
+                    }, 10000);
                     badge.dataset.timeoutRef = finishTimeout;
                 }
             }, 1000);
