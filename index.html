@@ -14,6 +14,7 @@
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --border-color: #2a2a32;
+            --border-color-visible: #4b5563; /* Enhanced visibility for unchecked states */
         }
 
         * {
@@ -146,9 +147,9 @@
             -webkit-appearance: none;
             width: 24px;
             height: 24px;
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--border-color-visible); /* Enhanced contour lines when unchecked */
             border-radius: 6px;
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(255, 255, 255, 0.04);
             display: inline-grid;
             place-content: center;
             cursor: pointer;
@@ -234,17 +235,17 @@
             display: block;
         }
 
-        /* Flex row configuration for action buttons */
+        /* Flex row layout for action elements */
         .timer-placement-wrapper {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             margin-top: 24px;
             margin-bottom: 16px;
         }
 
-        /* Standardized dimensions across pills with optimized compact margins */
+        /* Core pill configurations - width narrowed from 122px down to 112px */
         .badge-interactive-container, 
         .rest-timer-badge {
             display: flex;
@@ -253,21 +254,13 @@
             border: 1px solid #2d3139;
             border-radius: 40px;
             height: 46px;
+            width: 112px; 
+            padding: 6px 8px;
             box-sizing: border-box;
             transition: border-color 0.2s ease, background-color 0.2s ease;
         }
 
-        /* Reduced width tiny bit more for both pills */
-        .badge-interactive-container {
-            width: 122px;
-            padding: 6px 10px;
-            justify-content: flex-start;
-        }
-
         .rest-timer-badge {
-            width: 122px;
-            padding: 6px 10px;
-            justify-content: flex-start;
             cursor: pointer;
             user-select: none;
         }
@@ -286,18 +279,17 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            margin-right: 8px; /* Slightly tightened up space */
+            margin-right: 6px;
             flex-shrink: 0;
             transition: background-color 0.15s ease;
         }
 
-        /* Dynamic color shift when the weight pill input is pressed/focused */
-        /* Changes background to a color match of the outline border, but a tiny bit darker */
+        /* Darker contextual color tint switch when input container gets focus */
         .badge-interactive-container:focus-within .icon-circle-bg {
             background-color: #1d4ed8; 
         }
 
-        /* Normalized icon imagery dimensions inside backgrounds */
+        /* Inline vector asset normalization scales */
         .badge-ui-icon {
             width: 16px;
             height: 16px;
@@ -308,7 +300,6 @@
             transition: filter 0.15s ease;
         }
 
-        /* Flip the icon path details to high contrast white when the background circle darkens */
         .badge-interactive-container:focus-within .badge-ui-icon-dark {
             filter: brightness(0) invert(1);
         }
@@ -317,7 +308,7 @@
             filter: brightness(0.1);
         }
 
-        /* Typography input field sizing */
+        /* Input layout container */
         .weight-input-container {
             display: flex;
             align-items: baseline;
@@ -326,14 +317,14 @@
             overflow: hidden;
         }
 
-        /* Auto-compress width down slightly and eliminate padding */
+        /* Auto-compress widths parameters to draw elements tight together */
         .weight-input-field {
             background: transparent;
             border: none;
             font-size: 1.25rem;
             font-weight: 700;
             color: #b2bac2;
-            width: 38px;
+            width: 28px; /* Tightly matched size bounds to bring unit close */
             text-align: left;
             font-family: inherit;
             outline: none;
@@ -345,18 +336,19 @@
             font-weight: 700;
         }
 
-        /* Placed right behind the number with reduced font sizes */
+        /* Metric type treatment layout sitting cleanly right next to the value input */
         .weight-unit-label {
             font-size: 0.85rem;
             font-weight: 600;
             color: #7d848c;
-            margin-left: 1px;
+            margin-left: 0px; 
             user-select: none;
         }
 
         .timer-text-container {
             flex: 1;
             text-align: left;
+            padding-left: 2px;
         }
 
         .rest-timer-badge .timer-text {
@@ -370,7 +362,7 @@
             border-color: #3d434f;
         }
 
-        /* Active dynamic states colors and alerts */
+        /* Active tracking utility states color layers */
         .rest-timer-badge.running {
             background-color: rgba(245, 158, 11, 0.12);
             border-color: var(--accent-warning);
@@ -379,7 +371,7 @@
             color: var(--accent-warning);
         }
         .rest-timer-badge.running .icon-circle-bg {
-            background-color: #b45309; /* Darker warning accent color */
+            background-color: #b45309;
         }
         .rest-timer-badge.running .badge-ui-icon-dark {
             filter: brightness(0) invert(1);
@@ -393,7 +385,7 @@
             color: var(--accent-color);
         }
         .rest-timer-badge.paused .icon-circle-bg {
-            background-color: #1d4ed8; /* Darker blue accent color */
+            background-color: #1d4ed8;
         }
         .rest-timer-badge.paused .badge-ui-icon-dark {
             filter: brightness(0) invert(1);
