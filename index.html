@@ -119,7 +119,7 @@
             stroke: var(--accent-color);
         }
 
-        /* Distance between exercises increased to 52px */
+        /* Distance between exercises set to 52px */
         .exercise-card {
             display: flex;
             align-items: flex-start;
@@ -858,19 +858,60 @@
     </div>
 
     <script>
-        const alarmSound = new Audio('lightweight.mp3');
-        alarmSound.volume = 1.0;
+        // --- WEB AUDIO API HANDLER FOR ANDROID CO-EXISTENCE ---
+        let audioContext = null;
+        let audioBuffer = null;
+        let currentSource = null;
+
+        // Fetch array buffer immediately on load
+        fetch('lightweight.mp3')
+            .then(response => response.arrayBuffer())
+            .then(data => { window.storedAudioBuffer = data; })
+            .catch(err => console.log("Audio file pre-cache pending:", err));
 
         function unlockAudioContext() {
-            alarmSound.play().then(() => {
-                alarmSound.pause();
-                alarmSound.currentTime = 0;
-            }).catch(e => console.log("Audio unlock queued..."));
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (window.storedAudioBuffer && !audioBuffer) {
+                audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
+                    audioBuffer = buffer;
+                }, (err) => console.log("Decode error:", err));
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
             document.removeEventListener('click', unlockAudioContext);
             document.removeEventListener('touchstart', unlockAudioContext);
         }
         document.addEventListener('click', unlockAudioContext);
         document.addEventListener('touchstart', unlockAudioContext);
+
+        function playWebAudioAlert() {
+            if (!audioContext || !audioBuffer) {
+                // Instantly fall back to standard element if array buffer context wasn't ready
+                const fallback = new Audio('lightweight.mp3');
+                fallback.play().catch(e => console.log(e));
+                return;
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            stopWebAudioAlert();
+
+            currentSource = audioContext.createBufferSource();
+            currentSource.buffer = audioBuffer;
+            currentSource.connect(audioContext.destination);
+            currentSource.start(0);
+        }
+
+        function stopWebAudioAlert() {
+            if (currentSource) {
+                try { currentSource.stop(); } catch(e) {}
+                currentSource = null;
+            }
+        }
+        // -----------------------------------------------------
 
         const timerStates = new Map();
 
@@ -928,12 +969,12 @@
                     badge.classList.add('finished');
                     textSpan.innerText = "Let's Go!";
 
-                    alarmSound.currentTime = 0;
-                    alarmSound.play().catch(err => console.log("Playback blocked:", err));
+                    // Play sound via Web Audio API context mixer
+                    playWebAudioAlert();
 
                     if(navigator.vibrate) navigator.vibrate();
 
-                    // Modified from 6000 to 10000ms (10 seconds display time)
+                    // Persist message for 10000ms (10 seconds)
                     const finishTimeout = setTimeout(() => {
                         if (badge.classList.contains('finished')) {
                             clearAndResetBadgeState(badge);
@@ -963,8 +1004,7 @@
                 delete badge.dataset.timeoutRef;
             }
 
-            alarmSound.pause();
-            alarmSound.currentTime = 0;
+            stopWebAudioAlert();
 
             badge.classList.remove('running', 'paused', 'finished');
             delete badge.dataset.remainingTime;
