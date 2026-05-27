@@ -858,160 +858,175 @@
     </div>
 
     <script>
-        // --- WEB AUDIO API HANDLER FOR ANDROID CO-EXISTENCE ---
-        let audioContext = null;
-        let audioBuffer = null;
-        let currentSource = null;
+// --- OPTIMIZED WEB AUDIO API WITH BOOSTED GAIN ---
+let audioContext = null;
+let audioBuffer = null;
+let currentSource = null;
+let gainNode = null;
 
-        // Fetch array buffer immediately on load
-        fetch('lightweight.mp3')
-            .then(response => response.arrayBuffer())
-            .then(data => { window.storedAudioBuffer = data; })
-            .catch(err => console.log("Audio file pre-cache pending:", err));
+// Adjust this multiplier to find the sweet spot over your music (e.g., 2.0 = 200%, 3.0 = 300%)
+const volumeMultiplier = 2.5; 
 
-        function unlockAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (window.storedAudioBuffer && !audioBuffer) {
-                audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
-                    audioBuffer = buffer;
-                }, (err) => console.log("Decode error:", err));
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            document.removeEventListener('click', unlockAudioContext);
-            document.removeEventListener('touchstart', unlockAudioContext);
-        }
-        document.addEventListener('click', unlockAudioContext);
-        document.addEventListener('touchstart', unlockAudioContext);
+// Fetch array buffer immediately on load
+fetch('lightweight.mp3')
+    .then(response => response.arrayBuffer())
+    .then(data => { window.storedAudioBuffer = data; })
+    .catch(err => console.log("Audio file pre-cache pending:", err));
 
-        function playWebAudioAlert() {
-            if (!audioContext || !audioBuffer) {
-                // Instantly fall back to standard element if array buffer context wasn't ready
-                const fallback = new Audio('lightweight.mp3');
-                fallback.play().catch(e => console.log(e));
-                return;
-            }
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            stopWebAudioAlert();
+function unlockAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (window.storedAudioBuffer && !audioBuffer) {
+        audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
+            audioBuffer = buffer;
+        }, (err) => console.log("Decode error:", err));
+    }
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    document.removeEventListener('click', unlockAudioContext);
+    document.removeEventListener('touchstart', unlockAudioContext);
+}
+document.addEventListener('click', unlockAudioContext);
+document.addEventListener('touchstart', unlockAudioContext);
 
-            currentSource = audioContext.createBufferSource();
-            currentSource.buffer = audioBuffer;
-            currentSource.connect(audioContext.destination);
-            currentSource.start(0);
-        }
+function playWebAudioAlert() {
+    if (!audioContext || !audioBuffer) {
+        // Fallback to standard element if context wasn't ready
+        const fallback = new Audio('lightweight.mp3');
+        fallback.play().catch(e => console.log(e));
+        return;
+    }
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+    stopWebAudioAlert();
 
-        function stopWebAudioAlert() {
-            if (currentSource) {
-                try { currentSource.stop(); } catch(e) {}
-                currentSource = null;
-            }
-        }
-        // -----------------------------------------------------
+    currentSource = audioContext.createBufferSource();
+    currentSource.buffer = audioBuffer;
 
-        const timerStates = new Map();
+    // Create a gain node to act as an inline amplifier
+    gainNode = audioContext.createGain();
+    gainNode.gain.setValueAtTime(volumeMultiplier, audioContext.currentTime);
 
-        function toggleSection(element) {
-            element.parentElement.classList.toggle('active');
-        }
+    // Route: Source (MP3) -> Gain Node (Amplifier) -> Destination (Speakers/Headphones)
+    currentSource.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    currentSource.start(0);
+}
 
-        function toggleComplete(checkbox) {
-            const card = checkbox.closest('.exercise-card');
-            if(checkbox.checked) {
-                card.classList.add('completed');
-            } else {
-                card.classList.remove('completed');
-            }
-        }
+function stopWebAudioAlert() {
+    if (currentSource) {
+        try { currentSource.stop(); } catch(e) {}
+        currentSource = null;
+    }
+    if (gainNode) {
+        try { gainNode.disconnect(); } catch(e) {}
+        gainNode = null;
+    }
+}
+// -----------------------------------------------------
 
-        function formatDisplayTime(seconds) {
-            let mins = Math.floor(seconds / 60);
-            let secs = seconds % 60;
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
+const timerStates = new Map();
 
-        function handleTimerClick(badge) {
-            if (badge.dataset.doubleTapTimeout === "true") return;
+function toggleSection(element) {
+    element.parentElement.classList.toggle('active');
+}
 
-            if (badge.classList.contains('finished')) {
-                clearAndResetBadgeState(badge);
-                return;
-            }
+function toggleComplete(checkbox) {
+    const card = checkbox.closest('.exercise-card');
+    if(checkbox.checked) {
+        card.classList.add('completed');
+    } else {
+        card.classList.remove('completed');
+    }
+}
 
-            if (badge.classList.contains('running')) {
-                clearInterval(timerStates.get(badge));
-                badge.classList.remove('running');
-                badge.classList.add('paused');
-                return;
-            }
+function formatDisplayTime(seconds) {
+    let mins = Math.floor(seconds / 60);
+    let secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
 
-            badge.classList.remove('paused');
-            badge.classList.add('running');
+function handleTimerClick(badge) {
+    if (badge.dataset.doubleTapTimeout === "true") return;
 
-            let currentRemaining = badge.dataset.remainingTime ? 
-                parseInt(badge.dataset.remainingTime) : 
-                parseInt(badge.getAttribute('data-duration'));
+    if (badge.classList.contains('finished')) {
+        clearAndResetBadgeState(badge);
+        return;
+    }
 
-            const textSpan = badge.querySelector('.timer-text');
+    if (badge.classList.contains('running')) {
+        clearInterval(timerStates.get(badge));
+        badge.classList.remove('running');
+        badge.classList.add('paused');
+        return;
+    }
 
-            const interval = setInterval(() => {
-                currentRemaining--;
-                badge.dataset.remainingTime = currentRemaining;
-                textSpan.innerText = formatDisplayTime(currentRemaining);
+    badge.classList.remove('paused');
+    badge.classList.add('running');
 
-                if (currentRemaining <= 0) {
-                    clearInterval(interval);
-                    badge.classList.remove('running');
-                    badge.classList.add('finished');
-                    textSpan.innerText = "Let's Go!";
+    let currentRemaining = badge.dataset.remainingTime ? 
+        parseInt(badge.dataset.remainingTime) : 
+        parseInt(badge.getAttribute('data-duration'));
 
-                    // Play sound via Web Audio API context mixer
-                    playWebAudioAlert();
+    const textSpan = badge.querySelector('.timer-text');
 
-                    if(navigator.vibrate) navigator.vibrate();
+    const interval = setInterval(() => {
+        currentRemaining--;
+        badge.dataset.remainingTime = currentRemaining;
+        textSpan.innerText = formatDisplayTime(currentRemaining);
 
-                    // Persist message for 10000ms (10 seconds)
-                    const finishTimeout = setTimeout(() => {
-                        if (badge.classList.contains('finished')) {
-                            clearAndResetBadgeState(badge);
-                        }
-                    }, 10000);
-                    badge.dataset.timeoutRef = finishTimeout;
+        if (currentRemaining <= 0) {
+            clearInterval(interval);
+            badge.classList.remove('running');
+            badge.classList.add('finished');
+            textSpan.innerText = "Let's Go!";
+
+            // Play boosted sound
+            playWebAudioAlert();
+
+            if(navigator.vibrate) navigator.vibrate();
+
+            const finishTimeout = setTimeout(() => {
+                if (badge.classList.contains('finished')) {
+                    clearAndResetBadgeState(badge);
                 }
-            }, 1000);
-
-            timerStates.set(badge, interval);
+            }, 10000);
+            badge.dataset.timeoutRef = finishTimeout;
         }
+    }, 1000);
 
-        function handleTimerReset(badge) {
-            badge.dataset.doubleTapTimeout = "true";
-            setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
+    timerStates.set(badge, interval);
+}
 
-            clearAndResetBadgeState(badge);
-        }
+function handleTimerReset(badge) {
+    badge.dataset.doubleTapTimeout = "true";
+    setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
 
-        function clearAndResetBadgeState(badge) {
-            if (timerStates.has(badge)) {
-                clearInterval(timerStates.get(badge));
-                timerStates.delete(badge);
-            }
-            if (badge.dataset.timeoutRef) {
-                clearTimeout(parseInt(badge.dataset.timeoutRef));
-                delete badge.dataset.timeoutRef;
-            }
+    clearAndResetBadgeState(badge);
+}
 
-            stopWebAudioAlert();
+function clearAndResetBadgeState(badge) {
+    if (timerStates.has(badge)) {
+        clearInterval(timerStates.get(badge));
+        timerStates.delete(badge);
+    }
+    if (badge.dataset.timeoutRef) {
+        clearTimeout(parseInt(badge.dataset.timeoutRef));
+        delete badge.dataset.timeoutRef;
+    }
 
-            badge.classList.remove('running', 'paused', 'finished');
-            delete badge.dataset.remainingTime;
+    stopWebAudioAlert();
 
-            const originalDuration = parseInt(badge.getAttribute('data-duration'));
-            badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
-        }
+    badge.classList.remove('running', 'paused', 'finished');
+    delete badge.dataset.remainingTime;
+
+    const originalDuration = parseInt(badge.getAttribute('data-duration'));
+    badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
+}
     </script>
 </body>
 </html>
