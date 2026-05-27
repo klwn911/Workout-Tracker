@@ -119,7 +119,6 @@
             stroke: var(--accent-color);
         }
 
-        /* Distance between exercises optimized for 2x scale spacing */
         .exercise-card {
             display: flex;
             align-items: flex-start;
@@ -235,113 +234,125 @@
             display: block;
         }
 
-        /* Layout Container for Weight + Timer Row */
+        /* Modernized Flex Row for Weight and Timer UI Layout based on goal.png */
         .timer-placement-wrapper {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             margin-top: 24px;
             margin-bottom: 16px;
         }
 
-        /* Weight Input Field styling mirroring the Badge shape and text */
-        .weight-input {
-            background-color: #22252a;
-            border: 1px solid var(--border-color);
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        /* Combined Flex Wrapper Matching the Layout inside goal.png */
+        .badge-interactive-container {
+            display: flex;
+            align-items: center;
+            background-color: #21242a;
+            border: 1px solid #2d3139;
+            border-radius: 40px;
+            padding: 10px 24px;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .badge-interactive-container:focus-within {
+            border-color: var(--accent-color);
+            background-color: #262a32;
+        }
+
+        /* Icon Resizing and Positioning */
+        .badge-ui-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            display: block;
+            margin-right: 12px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* Cleaned Up Custom Weight Input fields */
+        .weight-input-field {
+            background: transparent;
+            border: none;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--text-main);
-            width: 68px;
-            text-align: center;
+            color: #b2bac2;
+            width: 52px;
+            text-align: right;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            
-            /* Match the scale(2) of the rest timer badge */
-            transform: scale(2);
-            transform-origin: left center;
+            padding: 0;
         }
 
-        .weight-input::placeholder {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .weight-input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 1px var(--accent-color);
-        }
-
-        .rest-timer-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background-color: #22252a;
-            border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .weight-input-field::placeholder {
+            color: rgba(178, 186, 194, 0.4);
             font-weight: 700;
-            color: var(--text-muted);
+        }
+
+        /* Units Suffix text */
+        .weight-unit-label {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #7d848c;
+            margin-left: 4px;
+            user-select: none;
+        }
+
+        /* Rest Timer Badge Dynamic Wrapper Layout */
+        .rest-timer-badge {
+            display: flex;
+            align-items: center;
+            background-color: #21242a;
+            border: 1px solid #2d3139;
+            padding: 10px 24px;
+            border-radius: 40px;
             cursor: pointer;
             user-select: none;
             transition: all 0.2s ease;
-            
-            /* Scaled by 2x */
-            transform: scale(2);
-            transform-origin: left center;
-        }
-
-        /* Compensate spacing to make room for the 2x scaling rightwards expansion */
-        .rest-timer-badge-container {
-            width: 110px; 
-            height: 32px;
-            display: flex;
-            align-items: center;
-        }
-        .weight-input-container {
-            width: 136px;
-            height: 32px;
-            display: flex;
-            align-items: center;
         }
 
         .rest-timer-badge:hover {
-            border-color: var(--text-muted);
+            border-color: #3d434f;
         }
 
+        .rest-timer-badge .timer-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #b2bac2;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Core Dynamic State Animations and Color Layout Modifications */
         .rest-timer-badge.running {
-            background-color: rgba(245, 158, 11, 0.15);
+            background-color: rgba(245, 158, 11, 0.12);
             border-color: var(--accent-warning);
+        }
+        .rest-timer-badge.running .timer-text {
             color: var(--accent-warning);
         }
 
         .rest-timer-badge.paused {
-            background-color: rgba(59, 130, 246, 0.15);
+            background-color: rgba(59, 130, 246, 0.12);
             border-color: var(--accent-color);
+        }
+        .rest-timer-badge.paused .timer-text {
             color: var(--accent-color);
         }
 
         .rest-timer-badge.finished {
             background-color: rgba(16, 185, 129, 0.15);
             border-color: var(--accent-success);
+            animation: pulse-alert-green 1.5s infinite;
+        }
+        .rest-timer-badge.finished .timer-text {
             color: var(--accent-success);
-            animation: pulse-green 1.5s infinite;
         }
 
-        .rest-timer-badge svg {
-            width: 12px;
-            height: 12px;
-            fill: currentColor;
-        }
-
-        @keyframes pulse-green {
-            0% { transform: scale(2); }
-            50% { transform: scale(2.06); }
-            100% { transform: scale(2); }
+        @keyframes pulse-alert-green {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
 
         .exercise-card.completed {
@@ -418,14 +429,16 @@
                         <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <!-- Redesigned Weight Input Badge Block Container -->
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
+                        <!-- Redesigned Rest Timer Badge Container -->
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">3:00</span>
                         </div>
                     </div>
                 </div>
@@ -444,14 +457,14 @@
                         <img src="cellImage_2029192408_1.jpg" class="exercise-image" alt="Standing Cable Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -470,14 +483,14 @@
                         <img src="cellImage_2029192408_2.jpg" class="exercise-image" alt="Incline Dumbbell Bicep Curls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -496,14 +509,14 @@
                         <img src="cellImage_2029192408_3.jpg" class="exercise-image" alt="Dual Cable Tricep Pushdowns">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -522,14 +535,14 @@
                         <img src="cellImage_2029192408_4.jpg" class="exercise-image" alt="EZ-Bar Preacher Curls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -548,14 +561,14 @@
                         <img src="cellImage_2029192408_5.jpg" class="exercise-image" alt="Overhead Cable Tricep Extensions">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -586,14 +599,14 @@
                         <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">3:00</span>
                         </div>
                     </div>
                 </div>
@@ -612,14 +625,14 @@
                         <img src="cellImage_1380858377_1.jpg" class="exercise-image" alt="Seated Leg Curl Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -638,14 +651,14 @@
                         <img src="cellImage_1380858377_5.jpg" class="exercise-image" alt="Leg Extension Maschine Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -664,14 +677,14 @@
                         <img src="cellImage_1380858377_3.jpg" class="exercise-image" alt="Romanian Deadlifts Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -690,14 +703,14 @@
                         <img src="cellImage_1380858377_4.jpg" class="exercise-image" alt="Standing Calf Raises Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -716,14 +729,14 @@
                         <img src="cellImage_1380858377_6.jpg" class="exercise-image" alt="Ab Crunch Machine Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">1:30</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">1:30</span>
                         </div>
                     </div>
                 </div>
@@ -754,14 +767,14 @@
                         <img src="cellImage_1583461792_0.jpg" class="exercise-image" alt="Incline Chest Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">3:00</span>
                         </div>
                     </div>
                 </div>
@@ -780,14 +793,14 @@
                         <img src="cellImage_1583461792_1.jpg" class="exercise-image" alt="T-Bar Row Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">3:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">3:00</span>
                         </div>
                     </div>
                 </div>
@@ -806,14 +819,14 @@
                         <img src="cellImage_1583461792_2.jpg" class="exercise-image" alt="Flat Machine Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -832,14 +845,14 @@
                         <img src="cellImage_1583461792_3.jpg" class="exercise-image" alt="Lat Pulldown Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -858,14 +871,14 @@
                         <img src="cellImage_1583461792_4.jpg" class="exercise-image" alt="Rear Delt Flyes Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -896,14 +909,14 @@
                         <img src="cellImage_1583461792_5.jpg" class="exercise-image" alt="Inner Chest Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -922,14 +935,14 @@
                         <img src="cellImage_1677496159_1.jpg" class="exercise-image" alt="Cable Pullovers">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -948,14 +961,14 @@
                         <img src="cellImage_1677496159_2.jpg" class="exercise-image" alt="Incline Cable Flyes">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -974,14 +987,14 @@
                         <img src="cellImage_1677496159_3.jpg" class="exercise-image" alt="Dumbbell Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -1000,14 +1013,14 @@
                         <img src="cellImage_1677496159_4.jpg" class="exercise-image" alt="Face Pulls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="weight-input-container">
-                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        <div class="badge-interactive-container">
+                            <img src="icon_weight.png" class="badge-ui-icon" alt="Weight Icon">
+                            <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
+                            <span class="weight-unit-label">kg</span>
                         </div>
-                        <div class="rest-timer-badge-container">
-                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span class="timer-text">2:00</span>
-                            </div>
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                            <img src="icon_timer.png" class="badge-ui-icon" alt="Timer Icon">
+                            <span class="timer-text">2:00</span>
                         </div>
                     </div>
                 </div>
@@ -1022,10 +1035,8 @@
         let currentSource = null;
         let gainNode = null;
 
-        // Amplifies the digital volume context over Spotify baseline music thread
         const volumeMultiplier = 3.0; 
 
-        // Initial caching pipeline
         fetch('lightweight.mp3')
             .then(response => response.arrayBuffer())
             .then(data => { window.storedAudioBuffer = data; })
@@ -1182,16 +1193,12 @@
             badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
         }
 
-        // --- DYNAMIC STORAGE KEY & LOCALSTORAGE PIPELINE ---
-
-        // Generates an automated unique storage key based on the exercise title string
         function generateExerciseStorageKey(inputElement) {
             const card = inputElement.closest('.exercise-card');
             if (!card) return null;
             const nameElement = card.querySelector('.exercise-name');
             if (!nameElement) return null;
             
-            // Format name to a safe alphanumeric key structure
             return 'weight_history_' + nameElement.innerText.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
         }
 
@@ -1203,7 +1210,7 @@
         }
 
         function initializeAppHistory() {
-            const inputs = document.querySelectorAll('.weight-input');
+            const inputs = document.querySelectorAll('.weight-input-field');
             inputs.forEach(input => {
                 const key = generateExerciseStorageKey(input);
                 if (key) {
@@ -1215,7 +1222,6 @@
             });
         }
 
-        // Initialize state right when page layout stabilizes
         document.addEventListener('DOMContentLoaded', initializeAppHistory);
     </script>
 </body>
