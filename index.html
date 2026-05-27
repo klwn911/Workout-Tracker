@@ -119,14 +119,14 @@
             stroke: var(--accent-color);
         }
 
-        /* Distance between exercises set to 52px */
+        /* Distance between exercises optimized for 2x scale spacing */
         .exercise-card {
             display: flex;
             align-items: flex-start;
             gap: 14px;
             border-left: 3px solid var(--accent-color);
             padding-left: 12px;
-            margin-bottom: 52px;
+            margin-bottom: 64px;
             transition: all 0.3s ease;
         }
 
@@ -235,11 +235,44 @@
             display: block;
         }
 
+        /* Layout Container for Weight + Timer Row */
         .timer-placement-wrapper {
             display: flex;
             justify-content: flex-start;
+            align-items: center;
+            gap: 12px;
             margin-top: 24px;
             margin-bottom: 16px;
+        }
+
+        /* Weight Input Field styling mirroring the Badge shape and text */
+        .weight-input {
+            background-color: #22252a;
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            width: 68px;
+            text-align: center;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            
+            /* Match the scale(2) of the rest timer badge */
+            transform: scale(2);
+            transform-origin: left center;
+        }
+
+        .weight-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .weight-input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 1px var(--accent-color);
         }
 
         .rest-timer-badge {
@@ -256,8 +289,24 @@
             cursor: pointer;
             user-select: none;
             transition: all 0.2s ease;
+            
+            /* Scaled by 2x */
             transform: scale(2);
             transform-origin: left center;
+        }
+
+        /* Compensate spacing to make room for the 2x scaling rightwards expansion */
+        .rest-timer-badge-container {
+            width: 110px; 
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+        .weight-input-container {
+            width: 136px;
+            height: 32px;
+            display: flex;
+            align-items: center;
         }
 
         .rest-timer-badge:hover {
@@ -331,7 +380,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Workout" />
     <link rel="manifest" href="site.webmanifest" />
-
 </head>
 <body>
 
@@ -370,9 +418,14 @@
                         <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">3:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -391,9 +444,14 @@
                         <img src="cellImage_2029192408_1.jpg" class="exercise-image" alt="Standing Cable Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -412,9 +470,14 @@
                         <img src="cellImage_2029192408_2.jpg" class="exercise-image" alt="Incline Dumbbell Bicep Curls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -433,9 +496,14 @@
                         <img src="cellImage_2029192408_3.jpg" class="exercise-image" alt="Dual Cable Tricep Pushdowns">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -454,9 +522,14 @@
                         <img src="cellImage_2029192408_4.jpg" class="exercise-image" alt="EZ-Bar Preacher Curls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -475,9 +548,14 @@
                         <img src="cellImage_2029192408_5.jpg" class="exercise-image" alt="Overhead Cable Tricep Extensions">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -508,9 +586,14 @@
                         <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">3:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -529,9 +612,14 @@
                         <img src="cellImage_1380858377_1.jpg" class="exercise-image" alt="Seated Leg Curl Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -550,9 +638,14 @@
                         <img src="cellImage_1380858377_5.jpg" class="exercise-image" alt="Leg Extension Maschine Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -571,9 +664,14 @@
                         <img src="cellImage_1380858377_3.jpg" class="exercise-image" alt="Romanian Deadlifts Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -592,9 +690,14 @@
                         <img src="cellImage_1380858377_4.jpg" class="exercise-image" alt="Standing Calf Raises Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -613,9 +716,14 @@
                         <img src="cellImage_1380858377_6.jpg" class="exercise-image" alt="Ab Crunch Machine Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">1:30</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">1:30</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -646,9 +754,14 @@
                         <img src="cellImage_1583461792_0.jpg" class="exercise-image" alt="Incline Chest Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">3:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -667,9 +780,14 @@
                         <img src="cellImage_1583461792_1.jpg" class="exercise-image" alt="T-Bar Row Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">3:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">3:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -688,9 +806,14 @@
                         <img src="cellImage_1583461792_2.jpg" class="exercise-image" alt="Flat Machine Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -709,9 +832,14 @@
                         <img src="cellImage_1583461792_3.jpg" class="exercise-image" alt="Lat Pulldown Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -730,9 +858,14 @@
                         <img src="cellImage_1583461792_4.jpg" class="exercise-image" alt="Rear Delt Flyes Form">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -763,9 +896,14 @@
                         <img src="cellImage_1583461792_5.jpg" class="exercise-image" alt="Inner Chest Press">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -784,9 +922,14 @@
                         <img src="cellImage_1677496159_1.jpg" class="exercise-image" alt="Cable Pullovers">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -805,9 +948,14 @@
                         <img src="cellImage_1677496159_2.jpg" class="exercise-image" alt="Incline Cable Flyes">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -826,9 +974,14 @@
                         <img src="cellImage_1677496159_3.jpg" class="exercise-image" alt="Dumbbell Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -847,9 +1000,14 @@
                         <img src="cellImage_1677496159_4.jpg" class="exercise-image" alt="Face Pulls">
                     </div>
                     <div class="timer-placement-wrapper">
-                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                            <span class="timer-text">2:00</span>
+                        <div class="weight-input-container">
+                            <input type="text" class="weight-input" placeholder="--- kg" oninput="saveWeight(this)">
+                        </div>
+                        <div class="rest-timer-badge-container">
+                            <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
+                                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span class="timer-text">2:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -858,175 +1016,207 @@
     </div>
 
     <script>
-// --- OPTIMIZED WEB AUDIO API WITH BOOSTED GAIN ---
-let audioContext = null;
-let audioBuffer = null;
-let currentSource = null;
-let gainNode = null;
+        // --- WEB AUDIO API AMPLIFIED MIXER FOR ANDROID ---
+        let audioContext = null;
+        let audioBuffer = null;
+        let currentSource = null;
+        let gainNode = null;
 
-// Adjust this multiplier to find the sweet spot over your music (e.g., 2.0 = 200%, 3.0 = 300%)
-const volumeMultiplier = 2.5; 
+        // Amplifies the digital volume context over Spotify baseline music thread
+        const volumeMultiplier = 3.0; 
 
-// Fetch array buffer immediately on load
-fetch('lightweight.mp3')
-    .then(response => response.arrayBuffer())
-    .then(data => { window.storedAudioBuffer = data; })
-    .catch(err => console.log("Audio file pre-cache pending:", err));
+        // Initial caching pipeline
+        fetch('lightweight.mp3')
+            .then(response => response.arrayBuffer())
+            .then(data => { window.storedAudioBuffer = data; })
+            .catch(err => console.log("Audio cache pre-stage ready.", err));
 
-function unlockAudioContext() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (window.storedAudioBuffer && !audioBuffer) {
-        audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
-            audioBuffer = buffer;
-        }, (err) => console.log("Decode error:", err));
-    }
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-    document.removeEventListener('click', unlockAudioContext);
-    document.removeEventListener('touchstart', unlockAudioContext);
-}
-document.addEventListener('click', unlockAudioContext);
-document.addEventListener('touchstart', unlockAudioContext);
-
-function playWebAudioAlert() {
-    if (!audioContext || !audioBuffer) {
-        // Fallback to standard element if context wasn't ready
-        const fallback = new Audio('lightweight.mp3');
-        fallback.play().catch(e => console.log(e));
-        return;
-    }
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-    stopWebAudioAlert();
-
-    currentSource = audioContext.createBufferSource();
-    currentSource.buffer = audioBuffer;
-
-    // Create a gain node to act as an inline amplifier
-    gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(volumeMultiplier, audioContext.currentTime);
-
-    // Route: Source (MP3) -> Gain Node (Amplifier) -> Destination (Speakers/Headphones)
-    currentSource.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    currentSource.start(0);
-}
-
-function stopWebAudioAlert() {
-    if (currentSource) {
-        try { currentSource.stop(); } catch(e) {}
-        currentSource = null;
-    }
-    if (gainNode) {
-        try { gainNode.disconnect(); } catch(e) {}
-        gainNode = null;
-    }
-}
-// -----------------------------------------------------
-
-const timerStates = new Map();
-
-function toggleSection(element) {
-    element.parentElement.classList.toggle('active');
-}
-
-function toggleComplete(checkbox) {
-    const card = checkbox.closest('.exercise-card');
-    if(checkbox.checked) {
-        card.classList.add('completed');
-    } else {
-        card.classList.remove('completed');
-    }
-}
-
-function formatDisplayTime(seconds) {
-    let mins = Math.floor(seconds / 60);
-    let secs = seconds % 60;
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-function handleTimerClick(badge) {
-    if (badge.dataset.doubleTapTimeout === "true") return;
-
-    if (badge.classList.contains('finished')) {
-        clearAndResetBadgeState(badge);
-        return;
-    }
-
-    if (badge.classList.contains('running')) {
-        clearInterval(timerStates.get(badge));
-        badge.classList.remove('running');
-        badge.classList.add('paused');
-        return;
-    }
-
-    badge.classList.remove('paused');
-    badge.classList.add('running');
-
-    let currentRemaining = badge.dataset.remainingTime ? 
-        parseInt(badge.dataset.remainingTime) : 
-        parseInt(badge.getAttribute('data-duration'));
-
-    const textSpan = badge.querySelector('.timer-text');
-
-    const interval = setInterval(() => {
-        currentRemaining--;
-        badge.dataset.remainingTime = currentRemaining;
-        textSpan.innerText = formatDisplayTime(currentRemaining);
-
-        if (currentRemaining <= 0) {
-            clearInterval(interval);
-            badge.classList.remove('running');
-            badge.classList.add('finished');
-            textSpan.innerText = "Let's Go!";
-
-            // Play boosted sound
-            playWebAudioAlert();
-
-            if(navigator.vibrate) navigator.vibrate();
-
-            const finishTimeout = setTimeout(() => {
-                if (badge.classList.contains('finished')) {
-                    clearAndResetBadgeState(badge);
-                }
-            }, 10000);
-            badge.dataset.timeoutRef = finishTimeout;
+        function unlockAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (window.storedAudioBuffer && !audioBuffer) {
+                audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
+                    audioBuffer = buffer;
+                }, (err) => console.log("WebAudio context decode failure:", err));
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            document.removeEventListener('click', unlockAudioContext);
+            document.removeEventListener('touchstart', unlockAudioContext);
         }
-    }, 1000);
+        document.addEventListener('click', unlockAudioContext);
+        document.addEventListener('touchstart', unlockAudioContext);
 
-    timerStates.set(badge, interval);
-}
+        function playWebAudioAlert() {
+            if (!audioContext || !audioBuffer) {
+                const fallback = new Audio('lightweight.mp3');
+                fallback.play().catch(e => console.log(e));
+                return;
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            stopWebAudioAlert();
 
-function handleTimerReset(badge) {
-    badge.dataset.doubleTapTimeout = "true";
-    setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
+            currentSource = audioContext.createBufferSource();
+            currentSource.buffer = audioBuffer;
 
-    clearAndResetBadgeState(badge);
-}
+            gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(volumeMultiplier, audioContext.currentTime);
 
-function clearAndResetBadgeState(badge) {
-    if (timerStates.has(badge)) {
-        clearInterval(timerStates.get(badge));
-        timerStates.delete(badge);
-    }
-    if (badge.dataset.timeoutRef) {
-        clearTimeout(parseInt(badge.dataset.timeoutRef));
-        delete badge.dataset.timeoutRef;
-    }
+            currentSource.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            currentSource.start(0);
+        }
 
-    stopWebAudioAlert();
+        function stopWebAudioAlert() {
+            if (currentSource) {
+                try { currentSource.stop(); } catch(e) {}
+                currentSource = null;
+            }
+            if (gainNode) {
+                try { gainNode.disconnect(); } catch(e) {}
+                gainNode = null;
+            }
+        }
+        // -----------------------------------------------------
 
-    badge.classList.remove('running', 'paused', 'finished');
-    delete badge.dataset.remainingTime;
+        const timerStates = new Map();
 
-    const originalDuration = parseInt(badge.getAttribute('data-duration'));
-    badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
-}
+        function toggleSection(element) {
+            element.parentElement.classList.toggle('active');
+        }
+
+        function toggleComplete(checkbox) {
+            const card = checkbox.closest('.exercise-card');
+            if(checkbox.checked) {
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
+            }
+        }
+
+        function formatDisplayTime(seconds) {
+            let mins = Math.floor(seconds / 60);
+            let secs = seconds % 60;
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function handleTimerClick(badge) {
+            if (badge.dataset.doubleTapTimeout === "true") return;
+
+            if (badge.classList.contains('finished')) {
+                clearAndResetBadgeState(badge);
+                return;
+            }
+
+            if (badge.classList.contains('running')) {
+                clearInterval(timerStates.get(badge));
+                badge.classList.remove('running');
+                badge.classList.add('paused');
+                return;
+            }
+
+            badge.classList.remove('paused');
+            badge.classList.add('running');
+
+            let currentRemaining = badge.dataset.remainingTime ? 
+                parseInt(badge.dataset.remainingTime) : 
+                parseInt(badge.getAttribute('data-duration'));
+
+            const textSpan = badge.querySelector('.timer-text');
+
+            const interval = setInterval(() => {
+                currentRemaining--;
+                badge.dataset.remainingTime = currentRemaining;
+                textSpan.innerText = formatDisplayTime(currentRemaining);
+
+                if (currentRemaining <= 0) {
+                    clearInterval(interval);
+                    badge.classList.remove('running');
+                    badge.classList.add('finished');
+                    textSpan.innerText = "Let's Go!";
+
+                    playWebAudioAlert();
+
+                    if(navigator.vibrate) navigator.vibrate();
+
+                    const finishTimeout = setTimeout(() => {
+                        if (badge.classList.contains('finished')) {
+                            clearAndResetBadgeState(badge);
+                        }
+                    }, 10000);
+                    badge.dataset.timeoutRef = finishTimeout;
+                }
+            }, 1000);
+
+            timerStates.set(badge, interval);
+        }
+
+        function handleTimerReset(badge) {
+            badge.dataset.doubleTapTimeout = "true";
+            setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
+
+            clearAndResetBadgeState(badge);
+        }
+
+        function clearAndResetBadgeState(badge) {
+            if (timerStates.has(badge)) {
+                clearInterval(timerStates.get(badge));
+                timerStates.delete(badge);
+            }
+            if (badge.dataset.timeoutRef) {
+                clearTimeout(parseInt(badge.dataset.timeoutRef));
+                delete badge.dataset.timeoutRef;
+            }
+
+            stopWebAudioAlert();
+
+            badge.classList.remove('running', 'paused', 'finished');
+            delete badge.dataset.remainingTime;
+
+            const originalDuration = parseInt(badge.getAttribute('data-duration'));
+            badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
+        }
+
+        // --- DYNAMIC STORAGE KEY & LOCALSTORAGE PIPELINE ---
+
+        // Generates an automated unique storage key based on the exercise title string
+        function generateExerciseStorageKey(inputElement) {
+            const card = inputElement.closest('.exercise-card');
+            if (!card) return null;
+            const nameElement = card.querySelector('.exercise-name');
+            if (!nameElement) return null;
+            
+            // Format name to a safe alphanumeric key structure
+            return 'weight_history_' + nameElement.innerText.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+        }
+
+        function saveWeight(inputElement) {
+            const key = generateExerciseStorageKey(inputElement);
+            if (key) {
+                localStorage.setItem(key, inputElement.value);
+            }
+        }
+
+        function initializeAppHistory() {
+            const inputs = document.querySelectorAll('.weight-input');
+            inputs.forEach(input => {
+                const key = generateExerciseStorageKey(input);
+                if (key) {
+                    const savedVal = localStorage.getItem(key);
+                    if (savedVal !== null) {
+                        input.value = savedVal;
+                    }
+                }
+            });
+        }
+
+        // Initialize state right when page layout stabilizes
+        document.addEventListener('DOMContentLoaded', initializeAppHistory);
     </script>
 </body>
 </html>
