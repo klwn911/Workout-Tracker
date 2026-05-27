@@ -71,11 +71,9 @@
             transition: transform 0.2s ease;
         }
 
-        /* Setup automated css numbering for the strict exercise order */
         .day-content {
             display: none;
             padding: 16px;
-            counter-reset: exercise-counter;
         }
 
         .day-section.active .day-content {
@@ -129,7 +127,6 @@
             padding-left: 12px;
             margin-bottom: 24px;
             transition: all 0.3s ease;
-            counter-increment: exercise-counter;
         }
 
         .exercise-card:last-child {
@@ -140,7 +137,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 2px;
+            margin-top: 4px;
             cursor: pointer;
         }
 
@@ -182,18 +179,14 @@
             flex: 1;
         }
 
-        /* Dynamically appends order numbers in front of exercise title */
+        /* Matched styling to the rep range style perfectly */
         .exercise-name {
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.15rem;
+            font-weight: 800;
             margin-bottom: 6px;
             transition: color 0.3s ease;
-        }
-
-        .exercise-name::before {
-            content: counter(exercise-counter) ". ";
-            color: var(--accent-color);
-            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--text-main);
         }
 
         .meta-row {
@@ -204,7 +197,6 @@
             flex-wrap: wrap;
         }
 
-        /* Increased rep range visual priority */
         .exercise-meta {
             font-size: 1.15rem;
             font-weight: 800;
@@ -243,16 +235,15 @@
             display: block;
         }
 
-        /* Centered execution wrapper for the scaled up timer below the image */
+        /* Cleaned up padding to match the exact start bounds of the image container above */
         .timer-placement-wrapper {
             display: flex;
             justify-content: flex-start;
-            padding-left: 24px; 
             margin-top: 24px;
             margin-bottom: 16px;
         }
 
-        /* Scaled up the timer badge size by 100% */
+        /* 100% larger element scaled out nicely from the left origin boundary */
         .rest-timer-badge {
             display: inline-flex;
             align-items: center;
@@ -307,10 +298,6 @@
 
         .exercise-card.completed .exercise-name {
             text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .exercise-card.completed .exercise-name::before {
             color: var(--text-muted);
         }
 
@@ -512,7 +499,7 @@
                     <div class="meta-row">
                         <div class="exercise-meta">3 sets x 6–8 reps</div>
                     </div>
-                    <div class="exercise-tips">Place feet low on platform for deep knee flexion. Keep heels planted. Control the 3-second negative.</div>
+                    <div class="exercise-tips">Keep feet low on platform for deep knee flexion. Plant heels securely. Control the 3-second negative.</div>
                     <div class="exercise-image-container">
                         <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
                     </div>
