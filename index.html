@@ -42,7 +42,7 @@
 
         .header-logo {
             width: 100%;
-            max-width: 450px;
+            max-width: 350px;
             height: auto;
             object-fit: contain;
             display: block;
@@ -65,6 +65,22 @@
         .day-section.active .day-content {
             display: block;
         }
+
+        #day-monday .day-content,
+        #day-friday .day-content,
+        #day-saturday .day-content,
+        #day-sunday .day-content {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: local;
+        }
+
+        #day-monday .day-content { background-image: url('monday_backdrop.png'); }
+        #day-friday .day-content { background-image: url('friday_backdrop.png'); }
+        #day-saturday .day-content { background-image: url('saturday_backdrop.png'); }
+        #day-sunday .day-content { background-image: url('sunday_backdrop.png'); }
+
 
         .day-header {
             padding: 16px;
@@ -404,12 +420,7 @@
         <!-- If your file is actually lowercase 'logo.jpg' -->
         <img src="Logo.png" class="header-logo" alt="Sidequest Logo">
     </header>
-
-    <div class="intensity-banner">
-        <strong>Coach Note:</strong> All working sets taken to 1 RiR or mechanical failure. Keep rest periods to 2-3 minutes for maximum recovery. Timers default depending on neurological cost.
-    </div>
-
-    <div class="day-section" id="day-monday">
+<div class="day-section" id="day-monday">
         <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Monday</div>
