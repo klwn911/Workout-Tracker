@@ -52,20 +52,16 @@
         }
 
         .day-section {
-            background-color: var(--day-bg);
-            border: 1px solid var(--day-border);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             margin-bottom: 16px;
             overflow: hidden;
-            /* Per-day theme tokens; overridden for each day below */
-            --day-bg: var(--card-bg);
-            --day-border: var(--border-color);
-            --accent-rgb: 220 161 70; /* keep in sync with --accent-color */
         }
 
         .day-content {
             display: none;
-            padding: 16px 12px;
+            padding: 16px;
         }
 
         .day-section.active .day-content {
@@ -92,41 +88,13 @@
         }
 
         /* Per-day backdrops. Files sit next to index.html. */
-        /* Monday: valley greens */
-        #day-monday {
-            --backdrop: url('monday_backdrop.png');
-            --day-bg: #182016;
-            --day-border: #31462d;
-            --accent-color: #a8d46f;
-            --accent-rgb: 168 212 111;
-        }
-        /* Friday: amber sunset */
-        #day-friday {
-            --backdrop: url('friday_backdrop.png');
-            --day-bg: #221c1e;
-            --day-border: #54402f;
-            --accent-color: #e6ae3c;
-            --accent-rgb: 230 174 60;
-        }
-        /* Saturday: mountain blues */
-        #day-saturday {
-            --backdrop: url('saturday_backdrop.png');
-            --day-bg: #111a2b;
-            --day-border: #27406a;
-            --accent-color: #6fb0e6;
-            --accent-rgb: 111 176 230;
-        }
-        /* Sunday: dusk clouds */
-        #day-sunday {
-            --backdrop: url('sunday_backdrop.png');
-            --day-bg: #1e1a2e;
-            --day-border: #4d3a5a;
-            --accent-color: #f0906a;
-            --accent-rgb: 240 144 106;
-        }
+        #day-monday   { --backdrop: url('monday_backdrop.png'); }
+        #day-friday   { --backdrop: url('friday_backdrop.png'); }
+        #day-saturday { --backdrop: url('saturday_backdrop.png'); }
+        #day-sunday   { --backdrop: url('sunday_backdrop.png'); }
 
         .day-section.active .day-header {
-            border-bottom-color: var(--day-border);
+            border-bottom-color: var(--border-color);
         }
 
         .day-title {
@@ -213,7 +181,6 @@
 
         .exercise-info {
             flex: 1;
-            min-width: 0; /* let content shrink instead of overflowing the card */
         }
 
         .exercise-name {
@@ -254,7 +221,7 @@
             margin-top: 12px;
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid var(--day-border);
+            border: 1px solid var(--border-color);
             background-color: rgba(0,0,0,0.15);
             transition: opacity 0.3s ease;
             display: flex;
@@ -287,13 +254,11 @@
             display: flex;
             align-items: center;
             justify-content: center; /* Horizontally center badge inner content */
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #21242a;
+            border: 1px solid #2d3139;
             border-radius: 40px;
-            padding: 6px 10px;
-            flex: 1 1 0;      /* share the row; shrink on narrow phones */
-            min-width: 0;
-            max-width: 145px; /* original size on wider screens */
+            padding: 6px 14px;
+            width: 145px;
             height: 46px;
             box-sizing: border-box;
             transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -306,7 +271,7 @@
 
         .badge-interactive-container:focus-within {
             border-color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: #262a32;
         }
 
         .icon-circle-bg {
@@ -339,7 +304,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            min-width: 0;
             white-space: nowrap; /* Keeps input elements tightly pinned side-by-side */
         }
 
@@ -349,8 +313,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: #b2bac2;
-            flex: 0 1 42px; /* 42px normally, can shrink slightly on very narrow phones */
-            min-width: 24px;
+            width: 42px; /* Standardized to prevent excessive layout shifts */
             text-align: right; /* Text pushes outward toward kg */
             font-family: inherit;
             outline: none;
@@ -382,12 +345,12 @@
         }
 
         .rest-timer-badge:hover {
-            border-color: rgba(255, 255, 255, 0.22);
+            border-color: #3d434f;
         }
 
         /* Active gamified states colors and alerts */
         .rest-timer-badge.running {
-            background-color: rgb(var(--accent-rgb) / 0.14);
+            background-color: rgba(220, 161, 70, 0.12);
             border-color: var(--accent-color);
         }
         .rest-timer-badge.running .timer-text {
@@ -419,7 +382,7 @@
         }
 
         .exercise-card.completed {
-            border-left-color: var(--day-border);
+            border-left-color: var(--border-color);
             opacity: 0.4;
         }
 

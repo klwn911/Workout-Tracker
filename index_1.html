@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#121214">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sidequest Protocol</title>
     <style>
         :root {
-            color-scheme: dark;
             --bg-color: #121214;
             --card-bg: #1a1a1e;
             --accent-color: #dca146; /* Gold accent from logo */
@@ -28,7 +26,6 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            touch-action: manipulation; /* no double-tap zoom delay, pinch-zoom still works */
             background-color: var(--bg-color);
             color: var(--text-main);
             padding: 16px;
@@ -52,20 +49,17 @@
         }
 
         .day-section {
-            background-color: var(--day-bg);
-            border: 1px solid var(--day-border);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             margin-bottom: 16px;
             overflow: hidden;
-            /* Per-day theme tokens; overridden for each day below */
-            --day-bg: var(--card-bg);
-            --day-border: var(--border-color);
-            --accent-rgb: 220 161 70; /* keep in sync with --accent-color */
+            transition: transform 0.2s ease;
         }
 
         .day-content {
             display: none;
-            padding: 16px 12px;
+            padding: 16px;
         }
 
         .day-section.active .day-content {
@@ -74,16 +68,7 @@
 
         .day-header {
             padding: 16px;
-            min-height: 76px;
             background-color: rgba(255, 255, 255, 0.02);
-            /* dark scrim (keeps text readable) layered over the per-day backdrop image */
-            background-image:
-                linear-gradient(90deg, rgba(8, 8, 16, 0.78) 0%, rgba(8, 8, 16, 0.45) 55%, rgba(8, 8, 16, 0.3) 100%),
-                var(--backdrop, none);
-            background-size: cover;
-            background-position: center bottom;
-            background-repeat: no-repeat;
-            image-rendering: pixelated; /* keep the pixel art crisp */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -91,54 +76,18 @@
             border-bottom: 1px solid transparent;
         }
 
-        /* Per-day backdrops. Files sit next to index.html. */
-        /* Monday: valley greens */
-        #day-monday {
-            --backdrop: url('monday_backdrop.png');
-            --day-bg: #182016;
-            --day-border: #31462d;
-            --accent-color: #a8d46f;
-            --accent-rgb: 168 212 111;
-        }
-        /* Friday: amber sunset */
-        #day-friday {
-            --backdrop: url('friday_backdrop.png');
-            --day-bg: #221c1e;
-            --day-border: #54402f;
-            --accent-color: #e6ae3c;
-            --accent-rgb: 230 174 60;
-        }
-        /* Saturday: mountain blues */
-        #day-saturday {
-            --backdrop: url('saturday_backdrop.png');
-            --day-bg: #111a2b;
-            --day-border: #27406a;
-            --accent-color: #6fb0e6;
-            --accent-rgb: 111 176 230;
-        }
-        /* Sunday: dusk clouds */
-        #day-sunday {
-            --backdrop: url('sunday_backdrop.png');
-            --day-bg: #1e1a2e;
-            --day-border: #4d3a5a;
-            --accent-color: #f0906a;
-            --accent-rgb: 240 144 106;
-        }
-
         .day-section.active .day-header {
-            border-bottom-color: var(--day-border);
+            border-bottom-color: var(--border-color);
         }
 
         .day-title {
             font-size: 1.1rem;
             font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
         }
 
         .day-subtitle {
             font-size: 0.8rem;
-            color: #d1d5db;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+            color: var(--text-muted);
             margin-top: 2px;
         }
 
@@ -146,8 +95,7 @@
             width: 20px;
             height: 20px;
             fill: none;
-            stroke: #e5e7eb;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+            stroke: var(--text-muted);
             stroke-width: 2;
             transition: transform 0.3s ease;
         }
@@ -164,7 +112,7 @@
             border-left: 3px solid var(--accent-color);
             padding-left: 12px;
             margin-bottom: 64px;
-            transition: opacity 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .exercise-card:last-child {
@@ -213,7 +161,6 @@
 
         .exercise-info {
             flex: 1;
-            min-width: 0; /* let content shrink instead of overflowing the card */
         }
 
         .exercise-name {
@@ -254,7 +201,7 @@
             margin-top: 12px;
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid var(--day-border);
+            border: 1px solid var(--border-color);
             background-color: rgba(0,0,0,0.15);
             transition: opacity 0.3s ease;
             display: flex;
@@ -287,13 +234,11 @@
             display: flex;
             align-items: center;
             justify-content: center; /* Horizontally center badge inner content */
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #21242a;
+            border: 1px solid #2d3139;
             border-radius: 40px;
-            padding: 6px 10px;
-            flex: 1 1 0;      /* share the row; shrink on narrow phones */
-            min-width: 0;
-            max-width: 145px; /* original size on wider screens */
+            padding: 6px 14px;
+            width: 145px;
             height: 46px;
             box-sizing: border-box;
             transition: border-color 0.2s ease, background-color 0.2s ease;
@@ -306,7 +251,7 @@
 
         .badge-interactive-container:focus-within {
             border-color: var(--accent-color);
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: #262a32;
         }
 
         .icon-circle-bg {
@@ -339,7 +284,6 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            min-width: 0;
             white-space: nowrap; /* Keeps input elements tightly pinned side-by-side */
         }
 
@@ -349,8 +293,7 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: #b2bac2;
-            flex: 0 1 42px; /* 42px normally, can shrink slightly on very narrow phones */
-            min-width: 24px;
+            width: 42px; /* Standardized to prevent excessive layout shifts */
             text-align: right; /* Text pushes outward toward kg */
             font-family: inherit;
             outline: none;
@@ -382,12 +325,12 @@
         }
 
         .rest-timer-badge:hover {
-            border-color: rgba(255, 255, 255, 0.22);
+            border-color: #3d434f;
         }
 
         /* Active gamified states colors and alerts */
         .rest-timer-badge.running {
-            background-color: rgb(var(--accent-rgb) / 0.14);
+            background-color: rgba(220, 161, 70, 0.12);
             border-color: var(--accent-color);
         }
         .rest-timer-badge.running .timer-text {
@@ -419,7 +362,7 @@
         }
 
         .exercise-card.completed {
-            border-left-color: var(--day-border);
+            border-left-color: var(--border-color);
             opacity: 0.4;
         }
 
@@ -446,16 +389,6 @@
             margin-bottom: 20px;
             color: #f1e4e4;
         }
-
-        .day-header:focus-visible,
-        .rest-timer-badge:focus-visible {
-            outline: 2px solid var(--accent-color);
-            outline-offset: -2px;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .rest-timer-badge.finished { animation: none; }
-        }
     </style>
 
     <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
@@ -464,12 +397,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Workout" />
     <link rel="manifest" href="site.webmanifest" />
-    <!-- The checked-star image is a CSS background inside hidden sections, so it would otherwise load on first tap -->
-    <link rel="preload" as="image" href="toggle_checked.png">
 </head>
 <body>
 
     <header>
+        <!-- If your file is actually lowercase 'logo.jpg' -->
         <img src="Logo.png" class="header-logo" alt="Sidequest Logo">
     </header>
 
@@ -480,7 +412,7 @@
      -->
     
     <div class="day-section" id="day-monday">
-        <div class="day-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Monday</div>
                 <div class="day-subtitle">Shoulders & Arms</div>
@@ -491,7 +423,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -502,7 +434,7 @@
                     </div>
                     <div class="exercise-tips">Keep elbows slightly tucked forward at a 30-degree angle to protect rotator cuffs. Control the descent.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_0.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Seated Shoulder Press">
+                        <img src="cellImage_2029192408_0.jpg" class="exercise-image" alt="Seated Shoulder Press">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -510,11 +442,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="180" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -528,7 +460,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -539,7 +471,7 @@
                     </div>
                     <div class="exercise-tips">Set pulley at bottom position. Lean slightly away from stack to maximize bottom stretch.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_1.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Standing Cable Lateral Raises">
+                        <img src="cellImage_2029192408_1.jpg" class="exercise-image" alt="Standing Cable Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -547,11 +479,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -565,7 +497,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -576,7 +508,7 @@
                     </div>
                     <div class="exercise-tips">Set bench to 45 degrees. Keep shoulders pinned against the pad. Lock elbows in place.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_2.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Incline Dumbbell Bicep Curls">
+                        <img src="cellImage_2029192408_2.jpg" class="exercise-image" alt="Incline Dumbbell Bicep Curls">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -584,11 +516,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -602,7 +534,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -613,7 +545,7 @@
                     </div>
                     <div class="exercise-tips">Use independent or single cable(s) to pull past your hips at the bottom for a deeper tricep contraction.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_3.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Dual Cable Tricep Pushdowns">
+                        <img src="cellImage_2029192408_3.jpg" class="exercise-image" alt="Dual Cable Tricep Pushdowns">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -621,11 +553,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -639,7 +571,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -650,7 +582,7 @@
                     </div>
                     <div class="exercise-tips">Stop just short of total lockout at the bottom to maintain constant tension and protect tendons.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_4.jpg" class="exercise-image" loading="lazy" decoding="async" alt="EZ-Bar Preacher Curls">
+                        <img src="cellImage_2029192408_4.jpg" class="exercise-image" alt="EZ-Bar Preacher Curls">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -658,11 +590,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -676,7 +608,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -687,7 +619,7 @@
                     </div>
                     <div class="exercise-tips">Brace core, face away from stack. Focus entirely on extension at the elbow without drifting upper arm.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_2029192408_5.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Overhead Cable Tricep Extensions">
+                        <img src="cellImage_2029192408_5.jpg" class="exercise-image" alt="Overhead Cable Tricep Extensions">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -695,11 +627,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -714,7 +646,7 @@
     </div>
 
     <div class="day-section" id="day-friday">
-        <div class="day-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Friday</div>
                 <div class="day-subtitle">Chest & Back</div>
@@ -725,7 +657,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -736,7 +668,7 @@
                     </div>
                     <div class="exercise-tips">Use a modest 30-degree incline. Arch upper back slightly and drive feet into the floor for stability.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_0.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Incline Chest Press Form">
+                        <img src="cellImage_1583461792_0.jpg" class="exercise-image" alt="Incline Chest Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -744,11 +676,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="180" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -762,7 +694,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -773,7 +705,7 @@
                     </div>
                     <div class="exercise-tips">Let shoulder blades fully stretch forward at the bottom, drive elbows back behind torso to finish.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_1.jpg" class="exercise-image" loading="lazy" decoding="async" alt="T-Bar Row Form">
+                        <img src="cellImage_1583461792_1.jpg" class="exercise-image" alt="T-Bar Row Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -781,11 +713,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="180" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -799,7 +731,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -810,7 +742,7 @@
                     </div>
                     <div class="exercise-tips">Adjust seat height so handles align with mid-chest. Drive shoulder blades deep into the pad.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_2.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Flat Machine Press Form">
+                        <img src="cellImage_1583461792_2.jpg" class="exercise-image" alt="Flat Machine Press Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -818,11 +750,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -836,7 +768,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -847,7 +779,7 @@
                     </div>
                     <div class="exercise-tips">Lean back slightly (10-15 degrees) and pull straight down to upper chest, driving down with elbows.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_3.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Lat Pulldown Form">
+                        <img src="cellImage_1583461792_3.jpg" class="exercise-image" alt="Lat Pulldown Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -855,11 +787,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -873,7 +805,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -884,7 +816,7 @@
                     </div>
                     <div class="exercise-tips">Keep a slight bend in elbows and focus on pushing hands outward to the walls rather than pulling back.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_4.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Rear Delt Flyes Form">
+                        <img src="cellImage_1583461792_4.jpg" class="exercise-image" alt="Rear Delt Flyes Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -892,11 +824,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -911,7 +843,7 @@
     </div>
 
     <div class="day-section" id="day-saturday">
-        <div class="day-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Saturday</div>
                 <div class="day-subtitle">Legs & Abs</div>
@@ -922,7 +854,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -933,7 +865,7 @@
                     </div>
                     <div class="exercise-tips">Keep feet low on platform for deep knee flexion. Plant heels securely. Control the 3-second negative.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_0.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Hack Squat Form">
+                        <img src="cellImage_1380858377_0.jpg" class="exercise-image" alt="Hack Squat Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -941,11 +873,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="180" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="180" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -959,7 +891,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -970,7 +902,7 @@
                     </div>
                     <div class="exercise-tips">Pull thigh pad down tightly against legs to lock pelvis. Squeeze hard at peak contraction.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_1.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Seated Leg Curl Form">
+                        <img src="cellImage_1380858377_1.jpg" class="exercise-image" alt="Seated Leg Curl Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -978,11 +910,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -996,7 +928,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1007,7 +939,7 @@
                     </div>
                     <div class="exercise-tips">Align knee joints with the machine pivot point. Pause at total peak contraction, squeezing the quads hard before a controlled descent.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_5.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Leg Extension Maschine Form">
+                        <img src="cellImage_1380858377_5.jpg" class="exercise-image" alt="Leg Extension Maschine Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1015,11 +947,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1033,7 +965,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1044,7 +976,7 @@
                     </div>
                     <div class="exercise-tips">Soft bend in knees, push hips back as far as possible. Stop when hips stop moving backward to spare lower back.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_3.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Romanian Deadlifts Form">
+                        <img src="cellImage_1380858377_3.jpg" class="exercise-image" alt="Romanian Deadlifts Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1052,11 +984,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1070,7 +1002,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1081,7 +1013,7 @@
                     </div>
                     <div class="exercise-tips">Drop heels completely, hold deep stretch for 2 full seconds to eliminate momentum, then explode up.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_4.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Standing Calf Raises Form">
+                        <img src="cellImage_1380858377_4.jpg" class="exercise-image" alt="Standing Calf Raises Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1089,11 +1021,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1107,7 +1039,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1118,7 +1050,7 @@
                     </div>
                     <div class="exercise-tips">Focus on flexing the spine and curling your torso downward rather than pulling with your hip flexors or arms. Squeeze your abs completely at the bottom.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1380858377_6.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Ab Crunch Machine Form">
+                        <img src="cellImage_1380858377_6.jpg" class="exercise-image" alt="Ab Crunch Machine Form">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1126,11 +1058,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="90" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="90" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1145,7 +1077,7 @@
     </div>
 
     <div class="day-section" id="day-sunday">
-        <div class="day-header" role="button" tabindex="0" aria-expanded="false">
+        <div class="day-header" onclick="toggleSection(this)">
             <div>
                 <div class="day-title">Sunday</div>
                 <div class="day-subtitle">Upper Body</div>
@@ -1156,7 +1088,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1167,7 +1099,7 @@
                     </div>
                     <div class="exercise-tips">Keep shoulders packed down and back. Focus entirely on squeezing your inner chest at peak contraction.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1583461792_5.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Inner Chest Press">
+                        <img src="cellImage_1583461792_5.jpg" class="exercise-image" alt="Inner Chest Press">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1175,11 +1107,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1193,7 +1125,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1204,7 +1136,7 @@
                     </div>
                     <div class="exercise-tips">Use a close neutral grip. Pull handle low toward your belly button, keeping shoulders dropped down.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_1.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Cable Pullovers">
+                        <img src="cellImage_1677496159_1.jpg" class="exercise-image" alt="Cable Pullovers">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1212,11 +1144,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1230,7 +1162,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1241,7 +1173,7 @@
                     </div>
                     <div class="exercise-tips">Focus heavily on the deep, loaded stretch at the bottom where cables offer maximum continuous tension.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_2.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Incline Cable Flyes">
+                        <img src="cellImage_1677496159_2.jpg" class="exercise-image" alt="Incline Cable Flyes">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1249,11 +1181,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1267,7 +1199,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1278,7 +1210,7 @@
                     </div>
                     <div class="exercise-tips">Tilt torso slightly forward, raise dumbbells out to the sides in a wide arc. Keep pinkies slightly high.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_3.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Dumbbell Lateral Raises">
+                        <img src="cellImage_1677496159_3.jpg" class="exercise-image" alt="Dumbbell Lateral Raises">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1286,11 +1218,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1304,7 +1236,7 @@
             <div class="exercise-card">
                 <div class="checkbox-container">
                     <label class="workout-checkbox-label">
-                        <input type="checkbox">
+                        <input type="checkbox" onchange="toggleComplete(this)">
                         <span class="star-icon"></span>
                     </label>
                 </div>
@@ -1315,7 +1247,7 @@
                     </div>
                     <div class="exercise-tips">Pull center of rope straight toward your nose, flaring elbows high and pulling hands apart at the back.</div>
                     <div class="exercise-image-container">
-                        <img src="cellImage_1677496159_4.jpg" class="exercise-image" loading="lazy" decoding="async" alt="Face Pulls">
+                        <img src="cellImage_1677496159_4.jpg" class="exercise-image" alt="Face Pulls">
                     </div>
                     <div class="timer-placement-wrapper">
                         <div class="badge-interactive-container">
@@ -1323,11 +1255,11 @@
                                 <img src="icon_weight.png" class="badge-ui-icon badge-ui-icon-dark" alt="Weight Icon">
                             </div>
                             <div class="weight-input-container">
-                                <input type="text" class="weight-input-field" placeholder="---" inputmode="decimal" autocomplete="off" aria-label="Weight in kg">
+                                <input type="text" class="weight-input-field" placeholder="---" oninput="saveWeight(this)">
                                 <span class="weight-unit-label">kg</span>
                             </div>
                         </div>
-                        <div class="rest-timer-badge" data-duration="120" role="button" tabindex="0" aria-label="Rest timer">
+                        <div class="rest-timer-badge" data-duration="120" onclick="handleTimerClick(this)" ondblclick="handleTimerReset(this)">
                             <div class="icon-circle-bg">
                                 <img src="icon_timer.png" class="badge-ui-icon badge-ui-icon-dark" alt="Timer Icon">
                             </div>
@@ -1342,234 +1274,200 @@
     </div>
 
     <script>
-    (() => {
-        'use strict';
-
-        /* ---------- Config ---------- */
-        const ALERT_SRC = 'lightweight.mp3';
-        const ALERT_GAIN = 3.0;               // amplification for quiet Android speakers
-        const DOUBLE_TAP_MS = 300;            // two taps within this window reset the timer
-        const FINISHED_RESET_MS = 10000;      // auto-reset "Let's Go!" state after 10s
-        const VIBRATE_PATTERN = [300, 100, 300];
-        const STORAGE_PREFIX = 'weight_history_'; // unchanged, so saved weights survive the update
-        const TIMER_STATES = ['running', 'paused', 'finished'];
-
-        /* ---------- Safe localStorage ---------- */
-        const store = {
-            get(key) { try { return localStorage.getItem(key); } catch { return null; } },
-            set(key, value) { try { localStorage.setItem(key, value); } catch { /* private mode / quota */ } }
-        };
-
-        /* ---------- Alert sound (Web Audio, with plain <audio> fallback) ---------- */
-        let audioCtx = null;
+        // --- WEB AUDIO API AMPLIFIED MIXER FOR ANDROID ---
+        let audioContext = null;
+        let audioBuffer = null;
+        let currentSource = null;
         let gainNode = null;
-        let alertBuffer = null;
-        let alertLoadTried = false;
-        let alertSource = null;
-        let fallbackAudio = null;
 
-        // Called from a real tap (starting a timer), which satisfies autoplay policies.
-        function prepareAudio() {
-            const Ctx = window.AudioContext || window.webkitAudioContext;
-            if (!Ctx) return;
+        const volumeMultiplier = 3.0; 
 
-            if (!audioCtx) {
-                audioCtx = new Ctx();
-                gainNode = audioCtx.createGain();
-                gainNode.gain.value = ALERT_GAIN;
-                gainNode.connect(audioCtx.destination);
+        fetch('lightweight.mp3')
+            .then(response => response.arrayBuffer())
+            .then(data => { window.storedAudioBuffer = data; })
+            .catch(err => console.log("Audio cache pre-stage ready.", err));
+
+        function unlockAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
-            if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-
-            if (!alertBuffer && !alertLoadTried) {
-                alertLoadTried = true;
-                fetch(ALERT_SRC)
-                    .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.arrayBuffer(); })
-                    .then(data => audioCtx.decodeAudioData(data))
-                    .then(buffer => { alertBuffer = buffer; })
-                    .catch(err => console.warn('Alert sound not preloaded, using fallback:', err));
+            if (window.storedAudioBuffer && !audioBuffer) {
+                audioContext.decodeAudioData(window.storedAudioBuffer.slice(0), (buffer) => {
+                    audioBuffer = buffer;
+                }, (err) => console.log("WebAudio context decode failure:", err));
             }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            document.removeEventListener('click', unlockAudioContext);
+            document.removeEventListener('touchstart', unlockAudioContext);
+        }
+        document.addEventListener('click', unlockAudioContext);
+        document.addEventListener('touchstart', unlockAudioContext);
+
+        function playWebAudioAlert() {
+            if (!audioContext || !audioBuffer) {
+                const fallback = new Audio('lightweight.mp3');
+                fallback.play().catch(e => console.log(e));
+                return;
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            stopWebAudioAlert();
+
+            currentSource = audioContext.createBufferSource();
+            currentSource.buffer = audioBuffer;
+
+            gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(volumeMultiplier, audioContext.currentTime);
+
+            currentSource.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            currentSource.start(0);
         }
 
-        function playAlert() {
-            stopAlert();
-            if (audioCtx && alertBuffer) {
-                if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-                alertSource = audioCtx.createBufferSource();
-                alertSource.buffer = alertBuffer;
-                alertSource.connect(gainNode);
-                alertSource.start();
+        function stopWebAudioAlert() {
+            if (currentSource) {
+                try { currentSource.stop(); } catch(e) {}
+                currentSource = null;
+            }
+            if (gainNode) {
+                try { gainNode.disconnect(); } catch(e) {}
+                gainNode = null;
+            }
+        }
+        // -----------------------------------------------------
+
+        const timerStates = new Map();
+
+        function toggleSection(element) {
+            element.parentElement.classList.toggle('active');
+        }
+
+        function toggleComplete(checkbox) {
+            const card = checkbox.closest('.exercise-card');
+            if(checkbox.checked) {
+                card.classList.add('completed');
             } else {
-                fallbackAudio = new Audio(ALERT_SRC);
-                const p = fallbackAudio.play();
-                if (p && p.catch) p.catch(err => console.warn('Alert playback blocked:', err));
+                card.classList.remove('completed');
             }
         }
 
-        function stopAlert() {
-            if (alertSource) {
-                try { alertSource.stop(); } catch { /* already stopped */ }
-                alertSource.disconnect();
-                alertSource = null;
-            }
-            if (fallbackAudio) {
-                fallbackAudio.pause();
-                fallbackAudio = null;
-            }
-        }
-
-        /* ---------- Rest timers ----------
-           Timers are based on a wall-clock end time instead of counting ticks,
-           so they stay accurate when the phone throttles or sleeps the page. */
-        const timers = new Map(); // badge -> { remainingMs, endAt, tick, resetTimeout, lastTap }
-
-        function getTimer(badge) {
-            let t = timers.get(badge);
-            if (!t) {
-                t = { remainingMs: Number(badge.dataset.duration) * 1000, endAt: 0, tick: null, resetTimeout: null, lastTap: 0 };
-                timers.set(badge, t);
-            }
-            return t;
-        }
-
-        function formatTime(totalSeconds) {
-            const mins = Math.floor(totalSeconds / 60);
-            const secs = totalSeconds % 60;
+        function formatDisplayTime(seconds) {
+            let mins = Math.floor(seconds / 60);
+            let secs = seconds % 60;
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        function setBadgeText(badge, text) {
-            const el = badge.querySelector('.timer-text');
-            if (el.textContent !== text) el.textContent = text;
-        }
+        function handleTimerClick(badge) {
+            if (badge.dataset.doubleTapTimeout === "true") return;
 
-        function setBadgeState(badge, state) {
-            badge.classList.remove(...TIMER_STATES);
-            if (state) badge.classList.add(state);
-        }
-
-        function startTimer(badge, t) {
-            prepareAudio();
-            t.endAt = Date.now() + t.remainingMs;
-            setBadgeState(badge, 'running');
-            t.tick = setInterval(() => updateTimer(badge, t), 250);
-        }
-
-        function pauseTimer(badge, t) {
-            clearInterval(t.tick);
-            t.tick = null;
-            t.remainingMs = Math.max(0, t.endAt - Date.now());
-            setBadgeState(badge, 'paused');
-        }
-
-        function updateTimer(badge, t) {
-            t.remainingMs = Math.max(0, t.endAt - Date.now());
-            if (t.remainingMs > 0) {
-                setBadgeText(badge, formatTime(Math.ceil(t.remainingMs / 1000)));
+            if (badge.classList.contains('finished')) {
+                clearAndResetBadgeState(badge);
                 return;
             }
-            finishTimer(badge, t);
+
+            if (badge.classList.contains('running')) {
+                clearInterval(timerStates.get(badge));
+                badge.classList.remove('running');
+                badge.classList.add('paused');
+                return;
+            }
+
+            badge.classList.remove('paused');
+            badge.classList.add('running');
+
+            let currentRemaining = badge.dataset.remainingTime ? 
+                parseInt(badge.dataset.remainingTime) : 
+                parseInt(badge.getAttribute('data-duration'));
+
+            const textSpan = badge.querySelector('.timer-text');
+
+            const interval = setInterval(() => {
+                currentRemaining--;
+                badge.dataset.remainingTime = currentRemaining;
+                textSpan.innerText = formatDisplayTime(currentRemaining);
+
+                if (currentRemaining <= 0) {
+                    clearInterval(interval);
+                    badge.classList.remove('running');
+                    badge.classList.add('finished');
+                    textSpan.innerText = "Let's Go!";
+
+                    playWebAudioAlert();
+
+                    if(navigator.vibrate) navigator.vibrate();
+
+                    const finishTimeout = setTimeout(() => {
+                        if (badge.classList.contains('finished')) {
+                            clearAndResetBadgeState(badge);
+                        }
+                    }, 10000);
+                    badge.dataset.timeoutRef = finishTimeout;
+                }
+            }, 1000);
+
+            timerStates.set(badge, interval);
         }
 
-        function finishTimer(badge, t) {
-            clearInterval(t.tick);
-            t.tick = null;
-            setBadgeState(badge, 'finished');
-            setBadgeText(badge, "Let's Go!");
-            playAlert();
-            if (navigator.vibrate) navigator.vibrate(VIBRATE_PATTERN);
-            t.resetTimeout = setTimeout(() => {
-                if (badge.classList.contains('finished')) resetTimer(badge);
-            }, FINISHED_RESET_MS);
+        function handleTimerReset(badge) {
+            badge.dataset.doubleTapTimeout = "true";
+            setTimeout(() => { badge.dataset.doubleTapTimeout = "false"; }, 300);
+
+            clearAndResetBadgeState(badge);
         }
 
-        function resetTimer(badge) {
-            const t = getTimer(badge);
-            clearInterval(t.tick);
-            clearTimeout(t.resetTimeout);
-            t.tick = t.resetTimeout = null;
-            const duration = Number(badge.dataset.duration);
-            t.remainingMs = duration * 1000;
-            stopAlert();
-            setBadgeState(badge, null);
-            setBadgeText(badge, formatTime(duration));
+        function clearAndResetBadgeState(badge) {
+            if (timerStates.has(badge)) {
+                clearInterval(timerStates.get(badge));
+                timerStates.delete(badge);
+            }
+            if (badge.dataset.timeoutRef) {
+                clearTimeout(parseInt(badge.dataset.timeoutRef));
+                delete badge.dataset.timeoutRef;
+            }
+
+            stopWebAudioAlert();
+
+            badge.classList.remove('running', 'paused', 'finished');
+            delete badge.dataset.remainingTime;
+
+            const originalDuration = parseInt(badge.getAttribute('data-duration'));
+            badge.querySelector('.timer-text').innerText = formatDisplayTime(originalDuration);
         }
 
-        // Tap: start / pause. Double-tap: reset. Tap while finished: reset.
-        function handleTimerTap(badge) {
-            const t = getTimer(badge);
-            const now = Date.now();
-            const isDoubleTap = now - t.lastTap < DOUBLE_TAP_MS;
-            t.lastTap = isDoubleTap ? 0 : now;
-
-            if (isDoubleTap || badge.classList.contains('finished')) return resetTimer(badge);
-            if (badge.classList.contains('running')) return pauseTimer(badge, t);
-            startTimer(badge, t);
+        function generateExerciseStorageKey(inputElement) {
+            const card = inputElement.closest('.exercise-card');
+            if (!card) return null;
+            const nameElement = card.querySelector('.exercise-name');
+            if (!nameElement) return null;
+            
+            return 'weight_history_' + nameElement.innerText.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
         }
 
-        // Catch up immediately when the page returns to the foreground.
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) return;
-            timers.forEach((t, badge) => { if (t.tick) updateTimer(badge, t); });
-        });
-
-        /* ---------- Accordion + completion ---------- */
-        function toggleSection(header) {
-            const open = header.parentElement.classList.toggle('active');
-            header.setAttribute('aria-expanded', String(open));
+        function saveWeight(inputElement) {
+            const key = generateExerciseStorageKey(inputElement);
+            if (key) {
+                localStorage.setItem(key, inputElement.value);
+            }
         }
 
-        /* ---------- Weight persistence ---------- */
-        function weightKey(card) {
-            const name = card && card.querySelector('.exercise-name');
-            return name ? STORAGE_PREFIX + name.textContent.trim().toLowerCase().replace(/[^a-z0-9]/g, '_') : null;
-        }
-
-        function restoreWeights() {
-            document.querySelectorAll('.exercise-card').forEach(card => {
-                const input = card.querySelector('.weight-input-field');
-                const key = weightKey(card);
-                if (!input || !key) return;
-                const saved = store.get(key);
-                if (saved !== null) input.value = saved;
+        function initializeAppHistory() {
+            const inputs = document.querySelectorAll('.weight-input-field');
+            inputs.forEach(input => {
+                const key = generateExerciseStorageKey(input);
+                if (key) {
+                    const savedVal = localStorage.getItem(key);
+                    if (savedVal !== null) {
+                        input.value = savedVal;
+                    }
+                }
             });
         }
 
-        /* ---------- Event delegation (replaces ~90 inline handlers) ---------- */
-        document.addEventListener('click', e => {
-            const badge = e.target.closest('.rest-timer-badge');
-            if (badge) return handleTimerTap(badge);
-
-            const header = e.target.closest('.day-header');
-            if (header) return toggleSection(header);
-
-            const weightBadge = e.target.closest('.badge-interactive-container');
-            if (weightBadge) weightBadge.querySelector('.weight-input-field').focus();
-        });
-
-        document.addEventListener('change', e => {
-            if (e.target.matches('.workout-checkbox-label input')) {
-                e.target.closest('.exercise-card').classList.toggle('completed', e.target.checked);
-            }
-        });
-
-        document.addEventListener('input', e => {
-            if (!e.target.matches('.weight-input-field')) return;
-            const key = weightKey(e.target.closest('.exercise-card'));
-            if (key) store.set(key, e.target.value);
-        });
-
-        // Keyboard support for the div-based buttons
-        document.addEventListener('keydown', e => {
-            if (e.key !== 'Enter' && e.key !== ' ') return;
-            const el = e.target.closest('.rest-timer-badge, .day-header');
-            if (!el) return;
-            e.preventDefault();
-            el.click();
-        });
-
-        restoreWeights();
-    })();
+        document.addEventListener('DOMContentLoaded', initializeAppHistory);
     </script>
 </body>
 </html>
